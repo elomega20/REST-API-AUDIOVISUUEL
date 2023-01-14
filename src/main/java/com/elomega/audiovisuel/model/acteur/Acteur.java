@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -28,5 +29,9 @@ public class Acteur {
     private List<Film> films;
     @OneToOne(mappedBy = "acteur")
     private TenuDeCombat tenuDeCombat;
+
+    public void addFilm(Film film){
+        this.films.add(film);
+    }
 
 }

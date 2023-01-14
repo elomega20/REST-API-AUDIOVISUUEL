@@ -35,4 +35,8 @@ public class Film {
     @JoinColumn(name = "maison_de_production_id",referencedColumnName = "maison_de_production_id")
     private MaisonDeProduction maisonDeProduction;
 
+    public void addActeur(Acteur acteur){
+        acteurs.add(acteur);
+    }
+
 }

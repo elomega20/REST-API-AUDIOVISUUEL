@@ -25,4 +25,7 @@ public class MaisonDeProduction {
     private LocalDate anneeDeCreation;
     @OneToMany(mappedBy = "maisonDeProduction")
     private List<Film> films;
+    public void addFilm(Film film){
+        films.add(film);
+    }
 }
