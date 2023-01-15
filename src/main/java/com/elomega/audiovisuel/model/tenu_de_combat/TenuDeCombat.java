@@ -3,6 +3,7 @@ package com.elomega.audiovisuel.model.tenu_de_combat;
 import com.elomega.audiovisuel.enumeration.Couleur;
 import com.elomega.audiovisuel.enumeration.Pouvoir;
 import com.elomega.audiovisuel.model.acteur.Acteur;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,6 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "tenu_de_combats")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class TenuDeCombat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

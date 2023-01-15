@@ -1,6 +1,7 @@
 package com.elomega.audiovisuel.model.maison_de_production;
 
 import com.elomega.audiovisuel.model.film.Film;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "maison_de_productions")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class MaisonDeProduction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
