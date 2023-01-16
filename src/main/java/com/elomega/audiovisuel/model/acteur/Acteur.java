@@ -32,7 +32,6 @@ public class Acteur {
     @JsonIgnore
     private List<Film> films;
     @OneToOne(mappedBy = "acteur")
-    @JsonIgnore
     private TenuDeCombat tenuDeCombat;
 
     public void addFilm(Film film){
