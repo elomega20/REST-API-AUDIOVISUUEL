@@ -11,7 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +31,7 @@ public class ActeurServiceImplementation implements ActeurService{
     }
 
     @Override
-    public Acteur getActeurById(@PathVariable Long id) {
+    public Acteur getActeurById(Long id) {
         Optional<Acteur> acteurOptional = acteurRepository.findById(id);
         if (acteurOptional.isPresent()){
             return acteurOptional.get();
