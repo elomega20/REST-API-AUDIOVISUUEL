@@ -46,10 +46,28 @@ public class TenuDeCombatServiceImplementation implements TenuDeCombatService {
     public TenuDeCombat updateTenuDeCombat(Long id, TenuDeCombat tenuDeCombat) {
         Optional<TenuDeCombat> tenuDeCombatExistant = tenuDeCombatRepository.findById(id);
         if (tenuDeCombatExistant.isPresent()){
-            BeanUtils.copyProperties(tenuDeCombat,tenuDeCombatExistant.get(),"tenuDeCombatId");
-            tenuDeCombatRepository.save(tenuDeCombatExistant.get());
-            return tenuDeCombatExistant.get();
+            if(tenuDeCombat.getCouleur() != null && tenuDeCombat.getPouvoir() != null) {
+                BeanUtils.copyProperties(tenuDeCombat, tenuDeCombatExistant.get(), "tenuDeCombatId");
+                tenuDeCombatRepository.save(tenuDeCombatExistant.get());
+                return tenuDeCombatExistant.get();
+            }else
+                return null;
         }
         return  null;
+    }
+    @Override
+    public TenuDeCombat partialUpdateTenuDeCombat(Long id,TenuDeCombat tenuDeCombat){
+        Optional<TenuDeCombat> tenuDeCombatExistant = tenuDeCombatRepository.findById(id);
+        if (tenuDeCombatExistant.isPresent()) {
+            if (tenuDeCombat.getNom() != null && !tenuDeCombat.getNom().isEmpty())
+                tenuDeCombatExistant.get().setNom(tenuDeCombat.getNom());
+            if (tenuDeCombat.getPouvoir() != null && !tenuDeCombat.getPouvoir().name().isEmpty())
+                tenuDeCombatExistant.get().setPouvoir(tenuDeCombat.getPouvoir());
+            if (tenuDeCombat.getCouleur() != null && !tenuDeCombat.getCouleur().name().isEmpty())
+                tenuDeCombatExistant.get().setCouleur(tenuDeCombat.getCouleur());
+            TenuDeCombat tenuDeCombatSave = tenuDeCombatRepository.save(tenuDeCombatExistant.get());
+            return tenuDeCombatSave;
+        }else
+            return  null;
     }
 }

@@ -92,15 +92,52 @@ public class TenuDeCombatController {
     }
 
     @PutMapping("/tenu_de_combats/{id}")
-    public ResponseEntity<Response> updateTenuDeCombat(@PathVariable Long id,@RequestBody @Valid TenuDeCombat tenuDeCombat){
-        return ResponseEntity.ok(
-                Response.builder()
-                        .timeStamp(LocalDateTime.now())
-                        .status(HttpStatus.OK)
-                        .statusCode(HttpStatus.OK.value())
-                        .message("mise a jour reussie avec success")
-                        .data(Map.of("tenu_de_combat",tenuDeCombatService.updateTenuDeCombat(id,tenuDeCombat)))
-                        .build()
-        );
+    public ResponseEntity<Response> updateTenuDeCombat(@PathVariable Long id,@RequestBody TenuDeCombat tenuDeCombat){
+        TenuDeCombat tenuDeCombatUpdate = tenuDeCombatService.updateTenuDeCombat(id,tenuDeCombat);
+        if (tenuDeCombatUpdate != null){
+            return ResponseEntity.ok(
+                    Response.builder()
+                            .timeStamp(LocalDateTime.now())
+                            .status(HttpStatus.OK)
+                            .statusCode(HttpStatus.OK.value())
+                            .message("mise a jour reussie avec success")
+                            .data(Map.of("tenu_de_combat",tenuDeCombatUpdate))
+                            .build()
+            );
+        }else {
+            return ResponseEntity.ok(
+                    Response.builder()
+                            .timeStamp(LocalDateTime.now())
+                            .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                            .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                            .message("PUT est utiliser pour une mise a jour complete,renseigner tout les champs")
+                            .build()
+            );
+        }
+    }
+
+    @PatchMapping("/tenu_de_combats/{id}")
+    public ResponseEntity<Response> partialUpdateTenuDeCombat(@PathVariable Long id,@RequestBody TenuDeCombat tenuDeCombat){
+        TenuDeCombat tenuDeCombatUpdate = tenuDeCombatService.partialUpdateTenuDeCombat(id,tenuDeCombat);
+        if (tenuDeCombatUpdate != null){
+            return ResponseEntity.ok(
+                    Response.builder()
+                            .timeStamp(LocalDateTime.now())
+                            .status(HttpStatus.OK)
+                            .statusCode(HttpStatus.OK.value())
+                            .message("mise a jour reussie avec success")
+                            .data(Map.of("tenu_de_combat",tenuDeCombatUpdate))
+                            .build()
+            );
+        }else {
+            return ResponseEntity.ok(
+                    Response.builder()
+                            .timeStamp(LocalDateTime.now())
+                            .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                            .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                            .message("le tenu de combat "+id+" n'existe pas , impossible de le mettre a jour")
+                            .build()
+            );
+        }
     }
 }

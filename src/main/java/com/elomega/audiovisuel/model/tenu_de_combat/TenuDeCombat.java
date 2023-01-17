@@ -22,7 +22,6 @@ public class TenuDeCombat {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "tenu_de_combat_id")
     private Long tenuDeCombatId;
-    @NotEmpty(message = "le nom ne doit pas etre vide")
     private String nom;
     private Pouvoir pouvoir;
     private Couleur couleur;

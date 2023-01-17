@@ -12,6 +12,8 @@ public interface TenuDeCombatService {
     public TenuDeCombat postTenuDeCombat(TenuDeCombat tenuDeCombat);
     // pour supprimer un tenu de combat via son identifiant
     public boolean deleteTenuDeCombarById(Long id);
-    // pour mettre a jour un tenu de combat
+    // pour la mise a jour complete d'un tenu de combat
     public TenuDeCombat updateTenuDeCombat(Long id,TenuDeCombat tenuDeCombat);
+    // pour la mise a jour pariel d'un tenu de combat
+    public TenuDeCombat partialUpdateTenuDeCombat(Long id,TenuDeCombat tenuDeCombat);
 }
