@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -49,16 +50,10 @@ public class ActeurController {
     }
 
     @GetMapping("/acteurs/{id}/films")
-    public ResponseEntity<Response> getAllFilmsOfActeur(@PathVariable("id") Long idActeur) {
-        return ResponseEntity.ok(
-                Response.builder()
-                        .timeStamp(LocalDateTime.now())
-                        .status(HttpStatus.OK)
-                        .statusCode(HttpStatus.OK.value())
-                        .message("l'ensemble des films de cette acteur " + idActeur)
-                        .data(Map.of("films",acteurService.getAllFilmsOfActeur(idActeur)))
-                        .build()
-        );
+    public ResponseEntity<List<Film>> getAllFilmsOfActeur(@PathVariable("id") Long idActeur) {
+        return acteurService.getAllFilmsOfActeur(idActeur)
+                .map(acteur -> new ResponseEntity<>(acteur.getFilms(),HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping("/acteurs/{id_acteur}/films/{id_film}")

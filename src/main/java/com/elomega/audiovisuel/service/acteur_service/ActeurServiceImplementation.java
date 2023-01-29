@@ -51,8 +51,8 @@ public class ActeurServiceImplementation implements ActeurService{
     }
 
     @Override
-    public List<Film> getAllFilmsOfActeur(Long idActeur) {
-        return acteurRepository.findById(idActeur).get().getFilms();
+    public Optional<Acteur> getAllFilmsOfActeur(Long idActeur) {
+        return acteurRepository.findById(idActeur);
     }
 
     @Override
