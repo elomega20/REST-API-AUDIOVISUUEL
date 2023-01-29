@@ -31,21 +31,14 @@ public class ActeurServiceImplementation implements ActeurService{
     }
 
     @Override
-    public Acteur getActeurById(Long id) {
-        Optional<Acteur> acteurOptional = acteurRepository.findById(id);
-        if (acteurOptional.isPresent()){
-            return acteurOptional.get();
-        }
-        return null;
+    public Optional<Acteur> getActeurById(Long id) {
+        return acteurRepository.findById(id);
     }
 
     @Override
-    public Acteur postActeur(Acteur acteur) {
+    public Optional<Acteur> postActeur(Acteur acteur) {
         Acteur acteurSave = acteurRepository.save(acteur);
-        if (acteurRepository.findById(acteurSave.getActeurId()).isPresent()){
-            return acteurSave;
-        }
-        return null;
+        return acteurRepository.findById(acteurSave.getActeurId());
     }
 
     @Override
@@ -63,9 +56,9 @@ public class ActeurServiceImplementation implements ActeurService{
     }
 
     @Override
-    public Stream<Film> getOneFilmOfActeur(Long idActeur, Long idFilm) {
+    public Optional<Film> getOneFilmOfActeur(Long idActeur, Long idFilm) {
         return acteurRepository.findById(idActeur).get().getFilms().stream()
-                .filter(Film -> Film.getFilmId() == idFilm);
+                .filter(Film -> Film.getFilmId() == idFilm).findFirst();
     }
 
     /*@Override

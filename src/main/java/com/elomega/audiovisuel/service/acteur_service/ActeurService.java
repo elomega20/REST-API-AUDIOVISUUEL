@@ -13,9 +13,9 @@ public interface ActeurService {
     // pour abtenir tout les acteurs
     public Page<Acteur> getActeur(int page,int size);
     // pour obtenir un acteur via son identifiant
-    public Acteur getActeurById(Long id);
+    public Optional<Acteur> getActeurById(Long id);
     // pour ajouter un acteur
-    public Acteur postActeur(Acteur acteur);
+    public Optional<Acteur> postActeur(Acteur acteur);
     // pour supprimer un acteur via son identifant
     public boolean deleteActeurById(Long id);
     // pour  obtenir tout les films d'un acteur

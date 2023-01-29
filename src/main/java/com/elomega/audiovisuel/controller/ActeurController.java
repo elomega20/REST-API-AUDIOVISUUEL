@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,67 +23,22 @@ public class ActeurController {
 
     //  ENDPOINTS ACTEURS
     @GetMapping("/acteurs")
-    public ResponseEntity<Response> getActeur(@Param("page") int page, @Param("size") int size) {
-        Page<Acteur> acteurs = acteurService.getActeur(page,size);
-        return ResponseEntity.ok(
-                Response.builder()
-                        .timeStamp(LocalDateTime.now())
-                        .status(HttpStatus.OK)
-                        .statusCode(HttpStatus.OK.value())
-                        .message("Liste des acteurs Obtenu")
-                        .data(Map.of("acteurs",acteurs))
-                        .build()
-        );
+    public ResponseEntity<Page<Acteur>> getActeur(@Param("page") int page, @Param("size") int size) {
+        return new ResponseEntity<>(acteurService.getActeur(page,size),HttpStatus.OK);
     }
 
     @GetMapping("/acteurs/{id}")
-    public ResponseEntity<Response> getActeurById(@PathVariable Long id) {
-        Acteur acteur = acteurService.getActeurById(id);
-        if(acteur != null){
-            return ResponseEntity.ok(
-                    Response.builder()
-                            .timeStamp(LocalDateTime.now())
-                            .status(HttpStatus.OK)
-                            .statusCode(HttpStatus.OK.value())
-                            .message("Obtention de l'acteur " + id)
-                            .data(Map.of("acteur",acteur))
-                            .build()
-            );
-        }else {
-            return ResponseEntity.ok(
-                    Response.builder()
-                            .timeStamp(LocalDateTime.now())
-                            .status(HttpStatus.NOT_FOUND)
-                            .statusCode(HttpStatus.NOT_FOUND.value())
-                            .message("l'acteur " + id + "n'existe pas!")
-                            .build()
-            );
-        }
+    public ResponseEntity<Acteur> getActeurById(@PathVariable Long id) {
+        return acteurService.getActeurById(id)
+                .map(acteur -> new ResponseEntity<>(acteur,HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping("/acteurs")
-    public ResponseEntity<Response> postActeur(@RequestBody Acteur acteur) {
-        Acteur acteurSave = acteurService.postActeur(acteur);
-        if (acteurSave != null){
-            return ResponseEntity.ok(
-                    Response.builder()
-                            .timeStamp(LocalDateTime.now())
-                            .status(HttpStatus.CREATED)
-                            .statusCode(HttpStatus.CREATED.value())
-                            .message("creation reussie")
-                            .data(Map.of("acteur",acteurSave))
-                            .build()
-            );
-        }else {
-            return ResponseEntity.ok(
-                    Response.builder()
-                            .timeStamp(LocalDateTime.now())
-                            .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                            .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                            .message("Il ya une erreur interne du serveur , esseyer plustard")
-                            .build()
-            );
-        }
+    public ResponseEntity<Acteur> postActeur(@RequestBody Acteur acteur) {
+        return acteurService.postActeur(acteur)
+                .map(acteurSave -> new ResponseEntity<>(acteurSave,HttpStatus.CREATED))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
     @DeleteMapping("/acteurs/{id}")
@@ -123,7 +79,7 @@ public class ActeurController {
     }
 
     @GetMapping("/acteurs/{id_acteur}/films/{id_film}")
-    public ResponseEntity<Response> getOneFilmOfActeur(@PathVariable("id_acteur") Long idActeur,@PathVariable("id_film") Long idFilm) {
+    /*public ResponseEntity<Response> getOneFilmOfActeur(@PathVariable("id_acteur") Long idActeur,@PathVariable("id_film") Long idFilm) {
         return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(LocalDateTime.now())
@@ -133,6 +89,12 @@ public class ActeurController {
                         .data(Map.of("film",acteurService.getOneFilmOfActeur(idActeur,idFilm)))
                         .build()
         );
+    }*/
+
+    public ResponseEntity<Film> getOneFilmOfActeur(@PathVariable("id_acteur") Long idActeur,@PathVariable("id_film") Long idFilm) {
+        return acteurService.getOneFilmOfActeur(idActeur,idFilm)
+                .map(f -> new ResponseEntity<>(f,HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PutMapping("/acteurs/{id}")
