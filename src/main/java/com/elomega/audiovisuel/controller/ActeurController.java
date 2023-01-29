@@ -42,27 +42,10 @@ public class ActeurController {
     }
 
     @DeleteMapping("/acteurs/{id}")
-    public ResponseEntity<Response> deleteActeurById(@PathVariable Long id) {
-        boolean isDeleted = acteurService.deleteActeurById(id);
-        if (isDeleted){
-            return ResponseEntity.ok(
-                    Response.builder()
-                            .timeStamp(LocalDateTime.now())
-                            .status(HttpStatus.OK)
-                            .statusCode(HttpStatus.OK.value())
-                            .message("acteur " + id + " a ete supprimer avec success")
-                            .build()
-            );
-        }else {
-            return ResponseEntity.ok(
-                    Response.builder()
-                            .timeStamp(LocalDateTime.now())
-                            .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                            .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                            .message("l'acteur que  vous esseyer de supprimer n'existe pas")
-                            .build()
-            );
-        }
+    public ResponseEntity<HttpStatus> deleteActeurById(@PathVariable Long id) {
+        return acteurService.deleteActeurById(id) ?
+                new ResponseEntity<>(HttpStatus.OK) :
+                new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @GetMapping("/acteurs/{id}/films")
