@@ -136,27 +136,10 @@ public class ActeurController {
     }
 
     @PutMapping("/acteurs/{id}")
-    public ResponseEntity<Response> updateActeur(@PathVariable Long id,@RequestBody Acteur acteur) {
-        Acteur acteurExistant = acteurService.updateActeur(id,acteur);
-        if (acteurExistant != null){
-            return ResponseEntity.ok(
-                    Response.builder()
-                            .timeStamp(LocalDateTime.now())
-                            .status(HttpStatus.OK)
-                            .statusCode(HttpStatus.OK.value())
-                            .message("l'acteur " + id + " est mise a jour avec success!")
-                            .build()
-            );
-        }else {
-            return ResponseEntity.ok(
-                    Response.builder()
-                            .timeStamp(LocalDateTime.now())
-                            .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                            .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                            .message("l'acteur " + id + "n'existe pas , mise a jour echouer!")
-                            .build()
-            );
-        }
+    public ResponseEntity<Acteur> updateActeur(@PathVariable Long id,@RequestBody Acteur acteur) {
+        Optional<Acteur> acteurExistant = acteurService.updateActeur(id,acteur);
+        return acteurExistant.map(acteur1->new ResponseEntity<>(acteur1, HttpStatus.OK))
+                .orElseGet(()-> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
 }

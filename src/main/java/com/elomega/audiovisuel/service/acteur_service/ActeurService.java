@@ -5,6 +5,7 @@ import com.elomega.audiovisuel.model.film.Film;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 
@@ -20,6 +21,6 @@ public interface ActeurService {
     // pour  obtenir tout les films d'un acteur
     public List<Film> getAllFilmsOfActeur(Long idActeur);
     // pour obtenir un film d'un acteur via leur identifiants
-    public Stream<Film> getOneFilmOfActeur(Long idActeur,Long idFilm);
-    public Acteur updateActeur(Long id,Acteur acteur);
+    public Optional<Film> getOneFilmOfActeur(Long idActeur,Long idFilm);
+    public Optional<Acteur> updateActeur(Long id, Acteur acteur);
 }

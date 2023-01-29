@@ -68,14 +68,26 @@ public class ActeurServiceImplementation implements ActeurService{
                 .filter(Film -> Film.getFilmId() == idFilm);
     }
 
-    @Override
-    public Acteur updateActeur(Long id, Acteur acteur) {
-        Optional<Acteur> acteurExistant = acteurRepository.findById(id);
+    /*@Override
+    public Optional<Acteur> updateActeur(Long id, Acteur acteur) {
+        Optional<Acteur> acteurExistant = Optional.ofNullable(acteurRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(String.format("L'acteur %d n'existe pas", id))));
         if (acteurExistant.isPresent()){
             BeanUtils.copyProperties(acteur,acteurExistant.get(),"acteurId");
             acteurRepository.save(acteurExistant.get());
-            return acteurExistant.get();
+            return acteurExistant;
         }
-        return null;
+        return Optional.empty();
+    }*/
+    @Override
+    public Optional<Acteur> updateActeur(Long id, Acteur acteur) {
+        Optional<Acteur> acteurExistant = Optional.ofNullable(acteurRepository.findById(id).orElseThrow(IllegalArgumentException::new));
+        return acteurExistant.map(
+                act -> {
+                    BeanUtils.copyProperties(acteur,act,"acteurId");
+                    acteurRepository.save(act);
+                    return act;
+                }
+        );
     }
+
 }
