@@ -25,6 +25,7 @@ import static java.lang.Boolean.TRUE;
 @Slf4j
 public class ActeurServiceImplementation implements ActeurService{
     private final ActeurRepository acteurRepository;
+    private final FilmRepository filmRepository;
     @Override
     public Page<Acteur> getActeur(int page,int size) {
         return acteurRepository.findAll(PageRequest.of(page,size));
@@ -38,7 +39,7 @@ public class ActeurServiceImplementation implements ActeurService{
     @Override
     public Optional<Acteur> postActeur(Acteur acteur) {
         Acteur acteurSave = acteurRepository.save(acteur);
-        return acteurRepository.findById(acteurSave.getActeurId());
+        return Optional.of(acteurSave);
     }
 
     @Override
@@ -51,34 +52,41 @@ public class ActeurServiceImplementation implements ActeurService{
     }
 
     @Override
-    public Optional<Acteur> getAllFilmsOfActeur(Long idActeur) {
-        return acteurRepository.findById(idActeur);
+    public Optional<List<Film>> getAllFilmsOfActeur(Long idActeur) {
+        Optional<Acteur> acteur = acteurRepository.findById(idActeur);
+        if (acteur.isPresent()){
+            return Optional.of(acteur.get().getFilms());
+        }
+        else
+            return Optional.empty();
     }
 
     @Override
     public Optional<Film> getOneFilmOfActeur(Long idActeur, Long idFilm) {
-        return acteurRepository.findById(idActeur).get().getFilms().stream()
-                .filter(Film -> Film.getFilmId() == idFilm).findFirst();
+        Optional<Acteur> acteur = acteurRepository.findById(idActeur);
+        if (acteur.isPresent()){
+            Optional<Film> film = filmRepository.findById(idFilm);
+            if (film.isPresent()){
+                return acteur
+                        .get()
+                        .getFilms()
+                        .stream()
+                        .filter(Film -> Film.getFilmId() == idFilm)
+                        .findFirst();
+            }
+            else
+                return Optional.empty();
+        }
+        else
+            return Optional.empty();
     }
 
-    /*@Override
-    public Optional<Acteur> updateActeur(Long id, Acteur acteur) {
-        Optional<Acteur> acteurExistant = Optional.ofNullable(acteurRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(String.format("L'acteur %d n'existe pas", id))));
-        if (acteurExistant.isPresent()){
-            BeanUtils.copyProperties(acteur,acteurExistant.get(),"acteurId");
-            acteurRepository.save(acteurExistant.get());
-            return acteurExistant;
-        }
-        return Optional.empty();
-    }*/
     @Override
-    public Optional<Acteur> updateActeur(Long id, Acteur acteur) {
-        Optional<Acteur> acteurExistant = Optional.ofNullable(acteurRepository.findById(id).orElseThrow(IllegalArgumentException::new));
+    public Optional<Acteur> updateActeur(Acteur acteur) {
+        Optional<Acteur> acteurExistant = Optional.ofNullable(acteurRepository.findById(acteur.getActeurId()).orElseThrow(IllegalArgumentException::new));
         return acteurExistant.map(
                 act -> {
-                    BeanUtils.copyProperties(acteur,act,"acteurId");
-                    acteurRepository.save(act);
-                    return act;
+                    return acteurRepository.save(acteur);
                 }
         );
     }

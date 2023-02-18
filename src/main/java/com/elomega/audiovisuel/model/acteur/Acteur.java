@@ -19,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "acteurs")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Acteur {
+public class Acteur{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "acteur_id")

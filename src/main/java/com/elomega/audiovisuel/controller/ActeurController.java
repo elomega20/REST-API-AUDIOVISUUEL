@@ -46,39 +46,27 @@ public class ActeurController {
     public ResponseEntity<HttpStatus> deleteActeurById(@PathVariable Long id) {
         return acteurService.deleteActeurById(id) ?
                 new ResponseEntity<>(HttpStatus.OK) :
-                new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/acteurs/{id}/films")
     public ResponseEntity<List<Film>> getAllFilmsOfActeur(@PathVariable("id") Long idActeur) {
         return acteurService.getAllFilmsOfActeur(idActeur)
-                .map(acteur -> new ResponseEntity<>(acteur.getFilms(),HttpStatus.OK))
+                .map(films -> new ResponseEntity<>(films,HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping("/acteurs/{id_acteur}/films/{id_film}")
-    /*public ResponseEntity<Response> getOneFilmOfActeur(@PathVariable("id_acteur") Long idActeur,@PathVariable("id_film") Long idFilm) {
-        return ResponseEntity.ok(
-                Response.builder()
-                        .timeStamp(LocalDateTime.now())
-                        .status(HttpStatus.OK)
-                        .statusCode(HttpStatus.OK.value())
-                        .message("films " +idFilm+ " de l'acteur " +idActeur)
-                        .data(Map.of("film",acteurService.getOneFilmOfActeur(idActeur,idFilm)))
-                        .build()
-        );
-    }*/
-
     public ResponseEntity<Film> getOneFilmOfActeur(@PathVariable("id_acteur") Long idActeur,@PathVariable("id_film") Long idFilm) {
         return acteurService.getOneFilmOfActeur(idActeur,idFilm)
-                .map(f -> new ResponseEntity<>(f,HttpStatus.OK))
+                .map(film -> new ResponseEntity<>(film,HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PutMapping("/acteurs/{id}")
-    public ResponseEntity<Acteur> updateActeur(@PathVariable Long id,@RequestBody Acteur acteur) {
-        Optional<Acteur> acteurExistant = acteurService.updateActeur(id,acteur);
-        return acteurExistant.map(acteur1->new ResponseEntity<>(acteur1, HttpStatus.OK))
+    @PutMapping("/acteurs")
+    public ResponseEntity<Acteur> updateActeur(@RequestBody Acteur acteur) {
+        return acteurService.updateActeur(acteur)
+                .map(acteur1->new ResponseEntity<>(acteur1, HttpStatus.OK))
                 .orElseGet(()-> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 

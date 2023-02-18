@@ -19,8 +19,8 @@ public interface ActeurService {
     // pour supprimer un acteur via son identifant
     public boolean deleteActeurById(Long id);
     // pour  obtenir tout les films d'un acteur
-    public Optional<Acteur> getAllFilmsOfActeur(Long idActeur);
+    public Optional<List<Film>> getAllFilmsOfActeur(Long idActeur);
     // pour obtenir un film d'un acteur via leur identifiants
     public Optional<Film> getOneFilmOfActeur(Long idActeur,Long idFilm);
-    public Optional<Acteur> updateActeur(Long id, Acteur acteur);
+    public Optional<Acteur> updateActeur(Acteur acteur);
 }
