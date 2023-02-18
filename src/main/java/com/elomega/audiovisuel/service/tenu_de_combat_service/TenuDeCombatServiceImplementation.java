@@ -1,5 +1,7 @@
 package com.elomega.audiovisuel.service.tenu_de_combat_service;
 
+import com.elomega.audiovisuel.enumeration.Couleur;
+import com.elomega.audiovisuel.enumeration.Pouvoir;
 import com.elomega.audiovisuel.model.tenu_de_combat.TenuDeCombat;
 import com.elomega.audiovisuel.repository.TenuDeCombatRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 
 @Service
@@ -22,52 +25,43 @@ public class TenuDeCombatServiceImplementation implements TenuDeCombatService {
     }
 
     @Override
-    public TenuDeCombat getTenuDeCombatById(Long id) {
-        Optional<TenuDeCombat> tenuDeCombat = tenuDeCombatRepository.findById(id);
-
-        if (tenuDeCombat.isPresent())
-            return tenuDeCombat.get();
-        else
-            return null;
+    public Optional<TenuDeCombat> getTenuDeCombatById(Long id) {
+        return tenuDeCombatRepository.findById(id);
     }
 
     @Override
-    public TenuDeCombat postTenuDeCombat(TenuDeCombat tenuDeCombat) {
-        return tenuDeCombatRepository.save(tenuDeCombat);
+    public Optional<TenuDeCombat> postTenuDeCombat(TenuDeCombat tenuDeCombat) {
+        tenuDeCombat.setPouvoir(getPouvoir(tenuDeCombat.getPouvoir()).name());
+        tenuDeCombat.setCouleur(getCouleur(tenuDeCombat.getCouleur()).name());
+        return Optional.of(tenuDeCombatRepository.save(tenuDeCombat));
     }
 
     @Override
     public boolean deleteTenuDeCombarById(Long id) {
-        tenuDeCombatRepository.deleteById(id);
-        return TRUE;
+        Optional<TenuDeCombat> tenuDeCombat = tenuDeCombatRepository.findById(id);
+        if (tenuDeCombat.isPresent()){
+            tenuDeCombatRepository.deleteById(id);
+            return TRUE;
+        }
+        return FALSE;
     }
 
     @Override
-    public TenuDeCombat updateTenuDeCombat(Long id, TenuDeCombat tenuDeCombat) {
-        Optional<TenuDeCombat> tenuDeCombatExistant = tenuDeCombatRepository.findById(id);
+    public Optional<TenuDeCombat> updateTenuDeCombat(TenuDeCombat tenuDeCombat) {
+        Optional<TenuDeCombat> tenuDeCombatExistant = tenuDeCombatRepository.findById(tenuDeCombat.getTenuDeCombatId());
         if (tenuDeCombatExistant.isPresent()){
-            if(tenuDeCombat.getCouleur() != null && tenuDeCombat.getPouvoir() != null) {
-                BeanUtils.copyProperties(tenuDeCombat, tenuDeCombatExistant.get(), "tenuDeCombatId");
-                tenuDeCombatRepository.save(tenuDeCombatExistant.get());
-                return tenuDeCombatExistant.get();
-            }else
-                return null;
+            tenuDeCombat.setPouvoir(getPouvoir(tenuDeCombat.getPouvoir()).name());
+            tenuDeCombat.setCouleur(getCouleur(tenuDeCombat.getCouleur()).name());
+            return Optional.of(tenuDeCombatRepository.save(tenuDeCombat));
         }
-        return  null;
+        return  Optional.empty();
     }
-    @Override
-    public TenuDeCombat partialUpdateTenuDeCombat(Long id,TenuDeCombat tenuDeCombat){
-        Optional<TenuDeCombat> tenuDeCombatExistant = tenuDeCombatRepository.findById(id);
-        if (tenuDeCombatExistant.isPresent()) {
-            if (tenuDeCombat.getNom() != null && !tenuDeCombat.getNom().isEmpty())
-                tenuDeCombatExistant.get().setNom(tenuDeCombat.getNom());
-            if (tenuDeCombat.getPouvoir() != null && !tenuDeCombat.getPouvoir().name().isEmpty())
-                tenuDeCombatExistant.get().setPouvoir(tenuDeCombat.getPouvoir());
-            if (tenuDeCombat.getCouleur() != null && !tenuDeCombat.getCouleur().name().isEmpty())
-                tenuDeCombatExistant.get().setCouleur(tenuDeCombat.getCouleur());
-            TenuDeCombat tenuDeCombatSave = tenuDeCombatRepository.save(tenuDeCombatExistant.get());
-            return tenuDeCombatSave;
-        }else
-            return  null;
+
+    private Couleur getCouleur(String couleur){
+        return Couleur.valueOf(couleur);
+    }
+
+    private Pouvoir getPouvoir(String pouvoir){
+        return Pouvoir.valueOf(pouvoir);
     }
 }
