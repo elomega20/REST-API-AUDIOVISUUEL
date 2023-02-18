@@ -2,6 +2,7 @@ package com.elomega.audiovisuel.service.film_service;
 
 import com.elomega.audiovisuel.model.acteur.Acteur;
 import com.elomega.audiovisuel.model.film.Film;
+import com.elomega.audiovisuel.repository.ActeurRepository;
 import com.elomega.audiovisuel.repository.FilmRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -20,27 +21,20 @@ import static java.lang.Boolean.TRUE;
 @RequiredArgsConstructor
 public class FilmServiceImplementation implements FilmService{
     private final FilmRepository filmRepository;
+    private final ActeurRepository acteurRepository;
     @Override
     public Page<Film> getFilm(int page, int size) {
         return filmRepository.findAll(PageRequest.of(page,size));
     }
 
     @Override
-    public Film getFilmById(Long id) {
-        Optional<Film> filmOptional = filmRepository.findById(id);
-        if (filmOptional.isPresent()){
-            return filmOptional.get();
-        }
-        return null;
+    public Optional<Film> getFilmById(Long id) {
+        return filmRepository.findById(id);
     }
 
     @Override
-    public Film postFilm(Film film) {
-        Film filmSave = filmRepository.save(film);
-        if (filmRepository.findById(filmSave.getFilmId()).isPresent()){
-            return filmSave;
-        }
-        return null;
+    public Optional<Film> postFilm(Film film) {
+        return Optional.of(filmRepository.save(film));
     }
 
     @Override
@@ -53,24 +47,42 @@ public class FilmServiceImplementation implements FilmService{
     }
 
     @Override
-    public List<Acteur> getAllActeursOfFilm(Long idFilm) {
-        return filmRepository.findById(idFilm).get().getActeurs();
-    }
-
-    @Override
-    public Stream<Acteur> getOneActeurOfFilm(Long idFilm, Long idActeur) {
-        return filmRepository.findById(idFilm).get().getActeurs().stream()
-                .filter(Acteur -> Acteur.getActeurId() == idActeur);
-    }
-
-    @Override
-    public Film updateFilm(Long id, Film film) {
-        Optional<Film> filmExistant = filmRepository.findById(id);
-        if (filmExistant.isPresent()){
-            BeanUtils.copyProperties(film,filmExistant.get(),"filmId");
-            filmRepository.save(filmExistant.get());
-            return filmExistant.get();
+    public Optional<List<Acteur>> getAllActeursOfFilm(Long idFilm) {
+        Optional<Film> film = filmRepository.findById(idFilm);
+        if (film.isPresent()){
+            return Optional.of(film.get().getActeurs());
         }
-        return null;
+        else
+            return Optional.empty();
+    }
+
+    @Override
+    public Optional<Acteur> getOneActeurOfFilm(Long idFilm, Long idActeur) {
+        Optional<Film> film = filmRepository.findById(idFilm);
+        if (film.isPresent()){
+            Optional<Acteur> acteur = acteurRepository.findById(idActeur);
+            if (acteur.isPresent()) {
+                return film
+                        .get()
+                        .getActeurs()
+                        .stream()
+                        .filter(Acteur -> Acteur.getActeurId() == idActeur)
+                        .findFirst();
+            }
+            else
+                return Optional.empty();
+        }
+        else
+            return Optional.empty();
+    }
+
+    @Override
+    public Optional<Film> updateFilm(Film film) {
+        Optional<Film> filmExistant = Optional.ofNullable(filmRepository.findById(film.getFilmId()).orElseThrow(IllegalArgumentException::new));
+        return filmExistant.map(
+                film1 -> {
+                    return filmRepository.save(film);
+                }
+        );
     }
 }
