@@ -23,8 +23,8 @@ public class TenuDeCombat {
     @Column(name = "tenu_de_combat_id")
     private Long tenuDeCombatId;
     private String nom;
-    private Pouvoir pouvoir;
-    private Couleur couleur;
+    private String pouvoir;
+    private String couleur;
     @OneToOne
     @JoinColumn(name = "acteur_id",referencedColumnName = "acteur_id")
     @JsonIgnore
