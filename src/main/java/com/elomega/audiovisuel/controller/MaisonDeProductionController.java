@@ -5,12 +5,14 @@ import com.elomega.audiovisuel.model.film.Film;
 import com.elomega.audiovisuel.model.maison_de_production.MaisonDeProduction;
 import com.elomega.audiovisuel.service.maison_de_production_service.MaisonDeProductionService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -19,129 +21,51 @@ import java.util.stream.Stream;
 public class MaisonDeProductionController {
     private final MaisonDeProductionService maisonDeProductionService;
 
-    @GetMapping("/maison_de_productions")
-    public ResponseEntity<Response> getMaisonDeproduction(@Param("page") int page, @Param("size") int size) {
-        return ResponseEntity.ok(
-             Response.builder()
-                     .timeStamp(LocalDateTime.now())
-                     .status(HttpStatus.OK)
-                     .statusCode(HttpStatus.OK.value())
-                     .message("liste des maisons de production obtenu")
-                     .data(Map.of("maison_de_productions",maisonDeProductionService.getMaisonDeproduction(page,size)))
-                     .build()
-        );
+    @GetMapping("/maison-de-productions")
+    public ResponseEntity<Page<MaisonDeProduction>> getMaisonDeproduction(@Param("page") int page, @Param("size") int size) {
+        return new ResponseEntity<>(maisonDeProductionService.getMaisonDeproduction(page,size),HttpStatus.OK);
     }
 
-    @GetMapping("/maison_de_productions/{id}")
-    public ResponseEntity<Response> getMaisonDeProducrionById(@PathVariable Long id) {
-        MaisonDeProduction maisonDeProduction = maisonDeProductionService.getMaisonDeProducrionById(id);
-        if (maisonDeProduction != null){
-            return ResponseEntity.ok(
-                    Response.builder()
-                            .timeStamp(LocalDateTime.now())
-                            .status(HttpStatus.OK)
-                            .statusCode(HttpStatus.OK.value())
-                            .message("maison de production d'identifiant "+id)
-                            .data(Map.of("maison_de_production",maisonDeProduction))
-                            .build()
-            );
-        }else {
-            return ResponseEntity.ok(
-                    Response.builder()
-                            .timeStamp(LocalDateTime.now())
-                            .status(HttpStatus.NOT_FOUND)
-                            .statusCode(HttpStatus.NOT_FOUND.value())
-                            .message("La maison de production "+id+" n'existe pas")
-                            .build()
-            );
-        }
+    @GetMapping("/maison-de-productions/{id}")
+    public ResponseEntity<MaisonDeProduction> getMaisonDeProducrionById(@PathVariable Long id) {
+        return maisonDeProductionService.getMaisonDeProducrionById(id)
+                .map(maisonDeProduction -> new ResponseEntity<>(maisonDeProduction,HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+
     }
 
-    @PostMapping("/maison_de_productions")
-    public ResponseEntity<Response> postMaisonDeProduction(@RequestBody MaisonDeProduction maisonDeProduction) {
-        MaisonDeProduction maisonDeProductionSave = maisonDeProductionService.postMaisonDeProduction(maisonDeProduction);
-        if (maisonDeProductionSave != null){
-            return ResponseEntity.ok(
-                    Response.builder()
-                            .timeStamp(LocalDateTime.now())
-                            .status(HttpStatus.OK)
-                            .statusCode(HttpStatus.OK.value())
-                            .message("maison de production "+maisonDeProduction.getMaisonDeProductionId()+" ajouter avec success")
-                            .data(Map.of("maison_de_production",maisonDeProductionSave))
-                            .build()
-            );
-        }else {
-            return ResponseEntity.ok(
-                    Response.builder()
-                            .timeStamp(LocalDateTime.now())
-                            .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                            .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                            .message("une erreur interne s'est produit")
-                            .build()
-            );
-        }
+    @PostMapping("/maison-de-productions")
+    public ResponseEntity<MaisonDeProduction> postMaisonDeProduction(@RequestBody MaisonDeProduction maisonDeProduction) {
+        return maisonDeProductionService.postMaisonDeProduction(maisonDeProduction)
+                .map(maisonDeProduction1 -> new ResponseEntity<>(maisonDeProduction1,HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
-    @DeleteMapping("/maison_de_producrions/{id}")
-    public ResponseEntity<Response> deleteMaisonDeProductionById(@PathVariable Long id) {
-        boolean isDeleted = maisonDeProductionService.deleteMaisonDeProductionById(id);
-        if (isDeleted){
-            return ResponseEntity.ok(
-                    Response.builder()
-                            .timeStamp(LocalDateTime.now())
-                            .status(HttpStatus.OK)
-                            .statusCode(HttpStatus.OK.value())
-                            .message("maison de production "+id+" supprimer avec success")
-                            .build()
-            );
-        }else {
-            return ResponseEntity.ok(
-                    Response.builder()
-                            .timeStamp(LocalDateTime.now())
-                            .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                            .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                            .message("impossible de supprimer la maison de production "+id+" car elle n'existe pas")
-                            .build()
-            );
-        }
+    @DeleteMapping("/maison-de-producrions/{id}")
+    public ResponseEntity<HttpStatus> deleteMaisonDeProductionById(@PathVariable Long id) {
+        return maisonDeProductionService.deleteMaisonDeProductionById(id) ?
+                new ResponseEntity<>(HttpStatus.OK) :
+                new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PutMapping("/maison_de_productions/{id}")
-    public ResponseEntity<Response> updateMaisonDeProduction(@PathVariable Long id,@RequestBody MaisonDeProduction maisonDeProduction) {
-        return ResponseEntity.ok(
-                Response.builder()
-                        .timeStamp(LocalDateTime.now())
-                        .status(HttpStatus.OK)
-                        .statusCode(HttpStatus.OK.value())
-                        .message("maison de production "+maisonDeProduction.getMaisonDeProductionId()+" mise a jour avec success")
-                        .data(Map.of("maison_de_production",maisonDeProductionService.updateMaisonDeProduction(id,maisonDeProduction)))
-                        .build()
-        );
+    @PutMapping("/maison-de-productions/{id}")
+    public ResponseEntity<MaisonDeProduction> updateMaisonDeProduction(@RequestBody MaisonDeProduction maisonDeProduction) {
+        return maisonDeProductionService.updateMaisonDeProduction(maisonDeProduction)
+                .map(maisonDeProduction1 -> new ResponseEntity<>(maisonDeProduction1,HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping("/maison_de_productions/{id}/films")
-    public ResponseEntity<Response> getAllFilmsOfMaisonDeProduction(@PathVariable("id") Long idMaisonDeproduction) {
-        return ResponseEntity.ok(
-                Response.builder()
-                        .timeStamp(LocalDateTime.now())
-                        .status(HttpStatus.OK)
-                        .statusCode(HttpStatus.OK.value())
-                        .message("tout les films de la maison de production "+idMaisonDeproduction)
-                        .data(Map.of("films",maisonDeProductionService.getAllFilmsOfMaisonDeProduction(idMaisonDeproduction)))
-                        .build()
-        );
+    @GetMapping("/maison-de-productions/{id}/films")
+    public ResponseEntity<List<Film>> getAllFilmsOfMaisonDeProduction(@PathVariable("id") Long idMaisonDeproduction) {
+        return maisonDeProductionService.getAllFilmsOfMaisonDeProduction(idMaisonDeproduction)
+                .map(films -> new ResponseEntity<>(films,HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping("/maison_de_productions/{idmp}/films/{idFilm}")
-    public ResponseEntity<Response> getOneFilmOfMaisonDeProduction(@PathVariable("idmp") Long idMaisonDeProduction,@PathVariable("idFilm") Long idFilm) {
-        return ResponseEntity.ok(
-                Response.builder()
-                        .timeStamp(LocalDateTime.now())
-                        .status(HttpStatus.OK)
-                        .statusCode(HttpStatus.OK.value())
-                        .message("films "+idFilm+" de la maison de production "+idMaisonDeProduction)
-                        .data(Map.of("film",maisonDeProductionService.getOneFilmOfMaisonDeProduction(idMaisonDeProduction,idFilm)))
-                        .build()
-        );
+    @GetMapping("/maison-de-productions/{idmp}/films/{idFilm}")
+    public ResponseEntity<Film> getOneFilmOfMaisonDeProduction(@PathVariable("idmp") Long idMaisonDeProduction,@PathVariable("idFilm") Long idFilm) {
+        return maisonDeProductionService.getOneFilmOfMaisonDeProduction(idMaisonDeProduction,idFilm)
+                .map(film -> new ResponseEntity<>(film,HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }
