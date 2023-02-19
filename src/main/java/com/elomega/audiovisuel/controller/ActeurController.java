@@ -3,6 +3,7 @@ package com.elomega.audiovisuel.controller;
 import com.elomega.audiovisuel.model.Response;
 import com.elomega.audiovisuel.model.acteur.Acteur;
 import com.elomega.audiovisuel.model.film.Film;
+import com.elomega.audiovisuel.model.tenu_de_combat.TenuDeCombat;
 import com.elomega.audiovisuel.service.acteur_service.ActeurService;
 import com.elomega.audiovisuel.service.film_service.FilmService;
 import lombok.RequiredArgsConstructor;
@@ -68,6 +69,12 @@ public class ActeurController {
         return acteurService.updateActeur(acteur)
                 .map(acteur1->new ResponseEntity<>(acteur1, HttpStatus.OK))
                 .orElseGet(()-> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
+    }
+    @PostMapping("/acteurs/{id_acteur}")
+    public ResponseEntity<TenuDeCombat> addTenuDeCombatforActeur(@PathVariable("id_acteur") Long idActeur,@RequestBody TenuDeCombat tenuDeCombat){
+        return acteurService.addTenuDeCombatforActeur(idActeur,tenuDeCombat)
+                .map(tenuDeCombat1 -> new ResponseEntity<>(tenuDeCombat1,HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
 }

@@ -2,6 +2,7 @@ package com.elomega.audiovisuel.service.acteur_service;
 
 import com.elomega.audiovisuel.model.acteur.Acteur;
 import com.elomega.audiovisuel.model.film.Film;
+import com.elomega.audiovisuel.model.tenu_de_combat.TenuDeCombat;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -23,4 +24,5 @@ public interface ActeurService {
     // pour obtenir un film d'un acteur via leur identifiants
     public Optional<Film> getOneFilmOfActeur(Long idActeur,Long idFilm);
     public Optional<Acteur> updateActeur(Acteur acteur);
+    public Optional<TenuDeCombat> addTenuDeCombatforActeur(Long idActeur, TenuDeCombat tenuDeCombat);
 }

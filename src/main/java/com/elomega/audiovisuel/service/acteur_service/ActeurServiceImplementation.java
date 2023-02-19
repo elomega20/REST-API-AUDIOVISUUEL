@@ -2,8 +2,11 @@ package com.elomega.audiovisuel.service.acteur_service;
 
 import com.elomega.audiovisuel.model.acteur.Acteur;
 import com.elomega.audiovisuel.model.film.Film;
+import com.elomega.audiovisuel.model.tenu_de_combat.TenuDeCombat;
 import com.elomega.audiovisuel.repository.ActeurRepository;
 import com.elomega.audiovisuel.repository.FilmRepository;
+import com.elomega.audiovisuel.repository.TenuDeCombatRepository;
+import com.elomega.audiovisuel.service.tenu_de_combat_service.TenuDeCombatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -26,6 +29,8 @@ import static java.lang.Boolean.TRUE;
 public class ActeurServiceImplementation implements ActeurService{
     private final ActeurRepository acteurRepository;
     private final FilmRepository filmRepository;
+    private final TenuDeCombatRepository tenuDeCombatRepository;
+    private final TenuDeCombatService tenuDeCombatService;
     @Override
     public Page<Acteur> getActeur(int page,int size) {
         return acteurRepository.findAll(PageRequest.of(page,size));
@@ -89,6 +94,24 @@ public class ActeurServiceImplementation implements ActeurService{
                     return acteurRepository.save(acteur);
                 }
         );
+    }
+
+    @Override
+    public Optional<TenuDeCombat> addTenuDeCombatforActeur(Long idActeur, TenuDeCombat tenuDeCombat) {
+        Optional<Acteur> acteur = acteurRepository.findById(idActeur);
+        if (acteur.isPresent()){
+            Optional<TenuDeCombat> tenuDeCombatPosted = tenuDeCombatService.postTenuDeCombat(tenuDeCombat);
+            if (tenuDeCombatPosted.isPresent()) {
+                acteur.get().setTenuDeCombat(tenuDeCombatPosted.get());
+                tenuDeCombatPosted.get().setActeur(acteur.get());
+                acteurRepository.save(acteur.get());
+                tenuDeCombatRepository.save(tenuDeCombatPosted.get());
+                return tenuDeCombatPosted;
+            }
+            else
+                return Optional.empty();
+        }
+        return Optional.empty();
     }
 
 }
