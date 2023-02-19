@@ -58,10 +58,10 @@ public class TenuDeCombatServiceImplementation implements TenuDeCombatService {
     }
 
     private Couleur getCouleur(String couleur){
-        return Couleur.valueOf(couleur);
+        return Couleur.valueOf(couleur.toUpperCase());
     }
 
     private Pouvoir getPouvoir(String pouvoir){
-        return Pouvoir.valueOf(pouvoir);
+        return Pouvoir.valueOf(pouvoir.toUpperCase());
     }
 }
