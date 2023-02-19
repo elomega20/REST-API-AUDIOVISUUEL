@@ -1,5 +1,6 @@
 package com.elomega.audiovisuel.service.maison_de_production_service;
 
+import com.elomega.audiovisuel.model.acteur.Acteur;
 import com.elomega.audiovisuel.model.film.Film;
 import com.elomega.audiovisuel.model.maison_de_production.MaisonDeProduction;
 import org.springframework.data.domain.Page;
@@ -23,4 +24,7 @@ public interface MaisonDeProductionService {
     public Optional<List<Film>> getAllFilmsOfMaisonDeProduction(Long idMaisonDeproduction);
     // pour obtenir un film d'une maison de production via leur idenrifiant
     public Optional<Film> getOneFilmOfMaisonDeProduction(Long idMaisonDeProduction,Long idFilm);
+    // ajouter un film pour une maison de production
+    public Optional<Film> postOneFilmForMaisonDeProduction(Long idMaisonDeProduction,Film film);
+    public Optional<List<Acteur>> associatActeursAndFilm(Long idMaisonDeProduction,Long idFilm,List<Acteur> acteurs);
 }

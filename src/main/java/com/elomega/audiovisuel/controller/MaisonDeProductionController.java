@@ -1,6 +1,7 @@
 package com.elomega.audiovisuel.controller;
 
 import com.elomega.audiovisuel.model.Response;
+import com.elomega.audiovisuel.model.acteur.Acteur;
 import com.elomega.audiovisuel.model.film.Film;
 import com.elomega.audiovisuel.model.maison_de_production.MaisonDeProduction;
 import com.elomega.audiovisuel.service.maison_de_production_service.MaisonDeProductionService;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 @RestController
@@ -67,5 +69,17 @@ public class MaisonDeProductionController {
         return maisonDeProductionService.getOneFilmOfMaisonDeProduction(idMaisonDeProduction,idFilm)
                 .map(film -> new ResponseEntity<>(film,HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+    @PostMapping("/maison-de-productions/{idmp}/films")
+    public ResponseEntity<Film> postOneFilmForMaisonDeProduction(@PathVariable Long idMaisonDeProduction,@RequestBody Film film){
+        return maisonDeProductionService.postOneFilmForMaisonDeProduction(idMaisonDeProduction,film)
+                .map(film1 -> new ResponseEntity<>(film1,HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
+    }
+    @PostMapping("/maison-de-productions/{idmp}/films/{idFilm}")
+    public ResponseEntity<List<Acteur>> associatActeursAndFilm(@PathVariable("idmp") Long idMaisonDeProduction,@PathVariable("idFilm") Long idFilm,@RequestBody List<Acteur> acteurs){
+        return maisonDeProductionService.associatActeursAndFilm(idMaisonDeProduction,idFilm,acteurs)
+                .map(acteurs1 -> new ResponseEntity<>(acteurs1,HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 }
