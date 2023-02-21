@@ -1,6 +1,6 @@
-package com.elomega.audiovisuel.service.tenu_de_combat_service;
+package com.elomega.audiovisuel.service;
 
-import com.elomega.audiovisuel.model.tenu_de_combat.TenuDeCombat;
+import com.elomega.audiovisuel.model.TenuDeCombat;
 import org.springframework.data.domain.Page;
 
 import java.util.Optional;

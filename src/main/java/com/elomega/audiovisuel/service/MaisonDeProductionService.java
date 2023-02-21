@@ -1,13 +1,12 @@
-package com.elomega.audiovisuel.service.maison_de_production_service;
+package com.elomega.audiovisuel.service;
 
-import com.elomega.audiovisuel.model.acteur.Acteur;
-import com.elomega.audiovisuel.model.film.Film;
-import com.elomega.audiovisuel.model.maison_de_production.MaisonDeProduction;
+import com.elomega.audiovisuel.model.Acteur;
+import com.elomega.audiovisuel.model.Film;
+import com.elomega.audiovisuel.model.MaisonDeProduction;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 public interface MaisonDeProductionService {
     // pour obtenir tout ls maisons de productions

@@ -1,6 +1,6 @@
-package com.elomega.audiovisuel.model.maison_de_production;
+package com.elomega.audiovisuel.model;
 
-import com.elomega.audiovisuel.model.film.Film;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -14,20 +14,25 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "maison_de_productions")
+@Table(name = "acteurs")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class MaisonDeProduction {
+public class Acteur{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "maison_de_production_id")
-    private Long maisonDeProductionId;
+    @Column(name = "acteur_id")
+    private Long acteurId;
     private String nom;
-    private String directeur;
-    @Column(name = "annee_de_creation")
-    private LocalDate anneeDeCreation;
-    @OneToMany(mappedBy = "maisonDeProduction")
+    private String prenom;
+    @Column(name = "date_de_naissance")
+    private LocalDate dateDeNaissance;
+    @ManyToMany(mappedBy = "acteurs")
+    @JsonIgnore
     private List<Film> films;
+    @OneToOne(mappedBy = "acteur")
+    private TenuDeCombat tenuDeCombat;
+
     public void addFilm(Film film){
-        films.add(film);
+        this.films.add(film);
     }
+
 }

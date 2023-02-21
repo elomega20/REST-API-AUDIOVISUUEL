@@ -1,11 +1,11 @@
-package com.elomega.audiovisuel.service.tenu_de_combat_service;
+package com.elomega.audiovisuel.service.serviceImpl;
 
 import com.elomega.audiovisuel.enumeration.Couleur;
 import com.elomega.audiovisuel.enumeration.Pouvoir;
-import com.elomega.audiovisuel.model.tenu_de_combat.TenuDeCombat;
+import com.elomega.audiovisuel.model.TenuDeCombat;
 import com.elomega.audiovisuel.repository.TenuDeCombatRepository;
+import com.elomega.audiovisuel.service.TenuDeCombatService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;

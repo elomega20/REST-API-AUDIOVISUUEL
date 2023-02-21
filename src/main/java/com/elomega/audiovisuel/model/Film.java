@@ -1,7 +1,5 @@
-package com.elomega.audiovisuel.model.film;
+package com.elomega.audiovisuel.model;
 
-import com.elomega.audiovisuel.model.acteur.Acteur;
-import com.elomega.audiovisuel.model.maison_de_production.MaisonDeProduction;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;

@@ -1,15 +1,15 @@
-package com.elomega.audiovisuel.service.acteur_service;
+package com.elomega.audiovisuel.service.serviceImpl;
 
-import com.elomega.audiovisuel.model.acteur.Acteur;
-import com.elomega.audiovisuel.model.film.Film;
-import com.elomega.audiovisuel.model.tenu_de_combat.TenuDeCombat;
+import com.elomega.audiovisuel.model.Acteur;
+import com.elomega.audiovisuel.model.Film;
+import com.elomega.audiovisuel.model.TenuDeCombat;
 import com.elomega.audiovisuel.repository.ActeurRepository;
 import com.elomega.audiovisuel.repository.FilmRepository;
 import com.elomega.audiovisuel.repository.TenuDeCombatRepository;
-import com.elomega.audiovisuel.service.tenu_de_combat_service.TenuDeCombatService;
+import com.elomega.audiovisuel.service.ActeurService;
+import com.elomega.audiovisuel.service.TenuDeCombatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
@@ -26,7 +25,7 @@ import static java.lang.Boolean.TRUE;
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
-public class ActeurServiceImplementation implements ActeurService{
+public class ActeurServiceImplementation implements ActeurService {
     private final ActeurRepository acteurRepository;
     private final FilmRepository filmRepository;
     private final TenuDeCombatRepository tenuDeCombatRepository;

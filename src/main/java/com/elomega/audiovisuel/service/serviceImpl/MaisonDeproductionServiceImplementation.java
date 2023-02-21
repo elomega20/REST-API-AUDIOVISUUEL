@@ -1,30 +1,27 @@
-package com.elomega.audiovisuel.service.maison_de_production_service;
+package com.elomega.audiovisuel.service.serviceImpl;
 
-import com.elomega.audiovisuel.model.acteur.Acteur;
-import com.elomega.audiovisuel.model.film.Film;
-import com.elomega.audiovisuel.model.maison_de_production.MaisonDeProduction;
+import com.elomega.audiovisuel.model.Acteur;
+import com.elomega.audiovisuel.model.Film;
+import com.elomega.audiovisuel.model.MaisonDeProduction;
 import com.elomega.audiovisuel.repository.ActeurRepository;
 import com.elomega.audiovisuel.repository.FilmRepository;
 import com.elomega.audiovisuel.repository.MaisonDeProductionRepository;
-import com.elomega.audiovisuel.service.film_service.FilmService;
+import com.elomega.audiovisuel.service.FilmService;
+import com.elomega.audiovisuel.service.MaisonDeProductionService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
-import org.springframework.context.support.BeanDefinitionDsl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.beans.Beans;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 
 @RequiredArgsConstructor
 @Service
-public class MaisonDeproductionServiceImplementation implements MaisonDeProductionService{
+public class MaisonDeproductionServiceImplementation implements MaisonDeProductionService {
     private final MaisonDeProductionRepository maisonDeProductionRepository;
     private final FilmRepository filmRepository;
     private final FilmService filmService;

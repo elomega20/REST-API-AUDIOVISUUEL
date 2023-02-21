@@ -1,20 +1,13 @@
 package com.elomega.audiovisuel.controller;
 
-import com.elomega.audiovisuel.enumeration.Couleur;
-import com.elomega.audiovisuel.enumeration.Pouvoir;
-import com.elomega.audiovisuel.model.Response;
-import com.elomega.audiovisuel.model.tenu_de_combat.TenuDeCombat;
-import com.elomega.audiovisuel.service.tenu_de_combat_service.TenuDeCombatService;
-import jakarta.validation.Valid;
+import com.elomega.audiovisuel.model.TenuDeCombat;
+import com.elomega.audiovisuel.service.TenuDeCombatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor

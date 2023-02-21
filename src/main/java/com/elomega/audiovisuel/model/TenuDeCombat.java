@@ -1,12 +1,9 @@
-package com.elomega.audiovisuel.model.tenu_de_combat;
+package com.elomega.audiovisuel.model;
 
-import com.elomega.audiovisuel.enumeration.Couleur;
-import com.elomega.audiovisuel.enumeration.Pouvoir;
-import com.elomega.audiovisuel.model.acteur.Acteur;
+import com.elomega.audiovisuel.model.Acteur;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -1,25 +1,24 @@
-package com.elomega.audiovisuel.service.film_service;
+package com.elomega.audiovisuel.service.serviceImpl;
 
-import com.elomega.audiovisuel.model.acteur.Acteur;
-import com.elomega.audiovisuel.model.film.Film;
+import com.elomega.audiovisuel.model.Acteur;
+import com.elomega.audiovisuel.model.Film;
 import com.elomega.audiovisuel.repository.ActeurRepository;
 import com.elomega.audiovisuel.repository.FilmRepository;
+import com.elomega.audiovisuel.service.FilmService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 
 @Service
 @RequiredArgsConstructor
-public class FilmServiceImplementation implements FilmService{
+public class FilmServiceImplementation implements FilmService {
     private final FilmRepository filmRepository;
     private final ActeurRepository acteurRepository;
     @Override

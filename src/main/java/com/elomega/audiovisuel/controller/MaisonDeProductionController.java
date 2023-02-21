@@ -1,10 +1,9 @@
 package com.elomega.audiovisuel.controller;
 
-import com.elomega.audiovisuel.model.Response;
-import com.elomega.audiovisuel.model.acteur.Acteur;
-import com.elomega.audiovisuel.model.film.Film;
-import com.elomega.audiovisuel.model.maison_de_production.MaisonDeProduction;
-import com.elomega.audiovisuel.service.maison_de_production_service.MaisonDeProductionService;
+import com.elomega.audiovisuel.model.Acteur;
+import com.elomega.audiovisuel.model.Film;
+import com.elomega.audiovisuel.model.MaisonDeProduction;
+import com.elomega.audiovisuel.service.MaisonDeProductionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
@@ -12,11 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Stream;
 
 @RestController
 @RequiredArgsConstructor

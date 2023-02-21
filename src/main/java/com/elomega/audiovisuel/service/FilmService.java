@@ -1,12 +1,11 @@
-package com.elomega.audiovisuel.service.film_service;
+package com.elomega.audiovisuel.service;
 
-import com.elomega.audiovisuel.model.acteur.Acteur;
-import com.elomega.audiovisuel.model.film.Film;
+import com.elomega.audiovisuel.model.Acteur;
+import com.elomega.audiovisuel.model.Film;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 public interface FilmService {
     // pour abtenir tout les films
