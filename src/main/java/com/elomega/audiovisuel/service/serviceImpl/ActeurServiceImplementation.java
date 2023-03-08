@@ -1,5 +1,6 @@
 package com.elomega.audiovisuel.service.serviceImpl;
 
+import com.elomega.audiovisuel.dto.ActeurRequest;
 import com.elomega.audiovisuel.model.Acteur;
 import com.elomega.audiovisuel.model.Film;
 import com.elomega.audiovisuel.model.TenuDeCombat;
@@ -7,6 +8,7 @@ import com.elomega.audiovisuel.repository.ActeurRepository;
 import com.elomega.audiovisuel.repository.FilmRepository;
 import com.elomega.audiovisuel.repository.TenuDeCombatRepository;
 import com.elomega.audiovisuel.service.ActeurService;
+import com.elomega.audiovisuel.service.ConvertDtoToEntity;
 import com.elomega.audiovisuel.service.TenuDeCombatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +32,7 @@ public class ActeurServiceImplementation implements ActeurService {
     private final FilmRepository filmRepository;
     private final TenuDeCombatRepository tenuDeCombatRepository;
     private final TenuDeCombatService tenuDeCombatService;
+    private final ConvertDtoToEntity convertDtoToEntity;
     @Override
     public Page<Acteur> getActeur(int page,int size) {
         return acteurRepository.findAll(PageRequest.of(page,size));
@@ -41,9 +44,10 @@ public class ActeurServiceImplementation implements ActeurService {
     }
 
     @Override
-    public Optional<Acteur> postActeur(Acteur acteur) {
-        Acteur acteurSave = acteurRepository.save(acteur);
-        return Optional.of(acteurSave);
+    public Optional<Acteur> postActeur(ActeurRequest acteurRequest) {
+        Acteur acteur = convertDtoToEntity.convertActeurDtoToActeurEntity(acteurRequest);
+        acteurRepository.saveAndFlush(acteur);
+        return Optional.of(acteur);
     }
 
     @Override

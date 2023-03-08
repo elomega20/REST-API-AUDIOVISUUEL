@@ -1,5 +1,6 @@
 package com.elomega.audiovisuel.controller;
 
+import com.elomega.audiovisuel.dto.ActeurRequest;
 import com.elomega.audiovisuel.model.Acteur;
 import com.elomega.audiovisuel.model.Film;
 import com.elomega.audiovisuel.model.TenuDeCombat;
@@ -32,8 +33,8 @@ public class ActeurController {
     }
 
     @PostMapping("/acteurs")
-    public ResponseEntity<Acteur> postActeur(@RequestBody Acteur acteur) {
-        return acteurService.postActeur(acteur)
+    public ResponseEntity<Acteur> postActeur(@RequestBody ActeurRequest acteurRequest) {
+        return acteurService.postActeur(acteurRequest)
                 .map(acteurSave -> new ResponseEntity<>(acteurSave,HttpStatus.CREATED))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }

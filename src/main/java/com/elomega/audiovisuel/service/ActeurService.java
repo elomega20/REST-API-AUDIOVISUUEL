@@ -1,5 +1,6 @@
 package com.elomega.audiovisuel.service;
 
+import com.elomega.audiovisuel.dto.ActeurRequest;
 import com.elomega.audiovisuel.model.Acteur;
 import com.elomega.audiovisuel.model.Film;
 import com.elomega.audiovisuel.model.TenuDeCombat;
@@ -15,7 +16,7 @@ public interface ActeurService {
     // pour obtenir un acteur via son identifiant
     public Optional<Acteur> getActeurById(Long id);
     // pour ajouter un acteur
-    public Optional<Acteur> postActeur(Acteur acteur);
+    public Optional<Acteur> postActeur(ActeurRequest acteurRequest);
     // pour supprimer un acteur via son identifant
     public boolean deleteActeurById(Long id);
     // pour  obtenir tout les films d'un acteur
