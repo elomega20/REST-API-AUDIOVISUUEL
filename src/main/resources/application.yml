@@ -1,12 +1,12 @@
 
 spring:
   datasource:
-    password: root
-    url: jdbc:mysql://localhost:3306/audiovisueldb
+    password: EFAP86aLnNonfK51u9m3
+    url: jdbc:mysql://root:EFAP86aLnNonfK51u9m3@containers-us-west-58.railway.app:5443/railway
     username: root
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
