@@ -65,7 +65,7 @@ public class ActeurController {
                 .map(acteur1->new ResponseEntity<>(acteur1, HttpStatus.OK))
                 .orElseGet(()-> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
-    @PostMapping("/acteurs/{id_acteur}")
+    @PostMapping("/acteurs/{id_acteur}/tenu-de-combats")
     public ResponseEntity<TenuDeCombat> addTenuDeCombatforActeur(@PathVariable("id_acteur") Long idActeur,@RequestBody TenuDeCombat tenuDeCombat){
         return acteurService.addTenuDeCombatforActeur(idActeur,tenuDeCombat)
                 .map(tenuDeCombat1 -> new ResponseEntity<>(tenuDeCombat1,HttpStatus.OK))

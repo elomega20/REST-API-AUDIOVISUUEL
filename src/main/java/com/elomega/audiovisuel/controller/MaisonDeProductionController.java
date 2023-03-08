@@ -45,7 +45,7 @@ public class MaisonDeProductionController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PutMapping("/maison-de-productions/{id}")
+    @PutMapping("/maison-de-productions")
     public ResponseEntity<MaisonDeProduction> updateMaisonDeProduction(@RequestBody MaisonDeProduction maisonDeProduction) {
         return maisonDeProductionService.updateMaisonDeProduction(maisonDeProduction)
                 .map(maisonDeProduction1 -> new ResponseEntity<>(maisonDeProduction1,HttpStatus.OK))
@@ -71,7 +71,7 @@ public class MaisonDeProductionController {
                 .map(film1 -> new ResponseEntity<>(film1,HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
-    @PostMapping("/maison-de-productions/{idmp}/films/{idFilm}")
+    @PostMapping("/maison-de-productions/{idmp}/films/{idFilm}/acteurs")
     public ResponseEntity<List<Acteur>> associatActeursAndFilm(@PathVariable("idmp") Long idMaisonDeProduction,@PathVariable("idFilm") Long idFilm,@RequestBody List<Acteur> acteurs){
         return maisonDeProductionService.associatActeursAndFilm(idMaisonDeProduction,idFilm,acteurs)
                 .map(acteurs1 -> new ResponseEntity<>(acteurs1,HttpStatus.OK))

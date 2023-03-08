@@ -39,7 +39,7 @@ public class TenuDeCombatController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PutMapping("/tenu-de-combats/{id}")
+    @PutMapping("/tenu-de-combats")
     public ResponseEntity<TenuDeCombat> updateTenuDeCombat(@RequestBody TenuDeCombat tenuDeCombat) {
         return tenuDeCombatService.updateTenuDeCombat(tenuDeCombat)
                 .map(tenuDeCombat1 -> new ResponseEntity<>(tenuDeCombat1,HttpStatus.OK))
