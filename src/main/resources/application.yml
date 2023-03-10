@@ -1,8 +1,8 @@
 
 spring:
   datasource:
-    password: EFAP86aLnNonfK51u9m3
-    url: jdbc:mysql://root:EFAP86aLnNonfK51u9m3@containers-us-west-58.railway.app:5443/railway
+    password: 3ZsotOlXTO8QoTNGn8PE
+    url: jdbc:mysql://root:3ZsotOlXTO8QoTNGn8PE@containers-us-west-130.railway.app:7047/railway
     username: root
   jpa:
     hibernate:
