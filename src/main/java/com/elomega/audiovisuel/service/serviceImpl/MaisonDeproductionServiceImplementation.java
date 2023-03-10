@@ -40,8 +40,12 @@ public class MaisonDeproductionServiceImplementation implements MaisonDeProducti
     }
 
     @Override
-    public Optional<MaisonDeProduction> getMaisonDeProducrionById(Long id) {
-        return maisonDeProductionRepository.findById(id);
+    public Optional<MaisonDeProductionResponse> getMaisonDeProducrionById(Long id) {
+        Optional<MaisonDeProduction> maisonDeProduction = maisonDeProductionRepository.findById(id);
+        if (maisonDeProduction.isPresent()){
+            return Optional.of(convertMainsonDeProductionEntityToMaisonDeProductionResponse(maisonDeProduction.get()));
+        }else
+            return Optional.empty();
     }
 
     @Override

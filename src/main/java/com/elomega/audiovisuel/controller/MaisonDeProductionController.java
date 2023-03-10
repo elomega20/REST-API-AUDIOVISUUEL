@@ -27,7 +27,7 @@ public class MaisonDeProductionController {
     }
 
     @GetMapping("/maison-de-productions/{id}")
-    public ResponseEntity<MaisonDeProduction> getMaisonDeProducrionById(@PathVariable Long id) {
+    public ResponseEntity<MaisonDeProductionResponse> getMaisonDeProducrionById(@PathVariable Long id) {
         return maisonDeProductionService.getMaisonDeProducrionById(id)
                 .map(maisonDeProduction -> new ResponseEntity<>(maisonDeProduction,HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));

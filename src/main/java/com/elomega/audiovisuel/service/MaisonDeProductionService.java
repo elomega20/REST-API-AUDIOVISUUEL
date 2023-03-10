@@ -15,7 +15,7 @@ public interface MaisonDeProductionService {
     // pour obtenir tout ls maisons de productions
     public Page<MaisonDeProduction> getMaisonDeproduction(int page, int size);
     // pour obtenir une maison de production via son identifiant
-    public Optional<MaisonDeProduction> getMaisonDeProducrionById(Long id);
+    public Optional<MaisonDeProductionResponse> getMaisonDeProducrionById(Long id);
     // pour ajouter une maison de production
     public Optional<MaisonDeProductionResponse> postMaisonDeProduction(MaisonDeProductionRequest maisonDeProductionRequest);
     //    // pour supprimer une maison de production via son Id
