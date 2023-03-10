@@ -1,6 +1,8 @@
 package com.elomega.audiovisuel.service;
 
 import com.elomega.audiovisuel.dto.ActeurResponse;
+import com.elomega.audiovisuel.dto.MaisonDeProductionRequest;
+import com.elomega.audiovisuel.dto.MaisonDeProductionResponse;
 import com.elomega.audiovisuel.model.Acteur;
 import com.elomega.audiovisuel.model.Film;
 import com.elomega.audiovisuel.model.MaisonDeProduction;
@@ -15,7 +17,7 @@ public interface MaisonDeProductionService {
     // pour obtenir une maison de production via son identifiant
     public Optional<MaisonDeProduction> getMaisonDeProducrionById(Long id);
     // pour ajouter une maison de production
-    public Optional<MaisonDeProduction> postMaisonDeProduction(MaisonDeProduction maisonDeProduction);
+    public Optional<MaisonDeProductionResponse> postMaisonDeProduction(MaisonDeProductionRequest maisonDeProductionRequest);
     //    // pour supprimer une maison de production via son Id
     public boolean deleteMaisonDeProductionById(Long id);
     // pour mettre a jour une mison de production

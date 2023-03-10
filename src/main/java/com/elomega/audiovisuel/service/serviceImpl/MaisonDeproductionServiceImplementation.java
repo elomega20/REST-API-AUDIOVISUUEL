@@ -1,6 +1,8 @@
 package com.elomega.audiovisuel.service.serviceImpl;
 
 import com.elomega.audiovisuel.dto.ActeurResponse;
+import com.elomega.audiovisuel.dto.MaisonDeProductionRequest;
+import com.elomega.audiovisuel.dto.MaisonDeProductionResponse;
 import com.elomega.audiovisuel.model.Acteur;
 import com.elomega.audiovisuel.model.Film;
 import com.elomega.audiovisuel.model.MaisonDeProduction;
@@ -31,6 +33,7 @@ public class MaisonDeproductionServiceImplementation implements MaisonDeProducti
     private final FilmService filmService;
     private final ActeurRepository acteurRepository;
     private final ConvertDtoToEntity convertDtoToEntity;
+    private final ConvertEntityToDto convertEntityToDto;
     @Override
     public Page<MaisonDeProduction> getMaisonDeproduction(int page, int size) {
         return maisonDeProductionRepository.findAll(PageRequest.of(page,size));
@@ -42,8 +45,11 @@ public class MaisonDeproductionServiceImplementation implements MaisonDeProducti
     }
 
     @Override
-    public Optional<MaisonDeProduction> postMaisonDeProduction(MaisonDeProduction maisonDeProduction) {
-        return Optional.of(maisonDeProductionRepository.save(maisonDeProduction));
+    public Optional<MaisonDeProductionResponse> postMaisonDeProduction(MaisonDeProductionRequest maisonDeProductionRequest) {
+        MaisonDeProduction maisonDeProduction = convertMaisonDeProductionRequestToMaisonDeProductionEntity(maisonDeProductionRequest);
+        return Optional.of(
+                    convertMainsonDeProductionEntityToMaisonDeProductionResponse(maisonDeProductionRepository.save(maisonDeProduction))
+                );
     }
 
     @Override
@@ -138,6 +144,17 @@ public class MaisonDeproductionServiceImplementation implements MaisonDeProducti
     }
     private Acteur convertActeurResponseToActeurEntity(ActeurResponse acteurResponse){
         return convertDtoToEntity.convertActeurResponseToActeurEntity(acteurResponse);
+    }
+
+    private MaisonDeProduction convertMaisonDeProductionRequestToMaisonDeProductionEntity(MaisonDeProductionRequest maisonDeProductionRequest) {
+        return convertDtoToEntity.convertMaisonDeProductionRequestToMaisonDeProductionEntity(maisonDeProductionRequest);
+    }
+    private MaisonDeProduction convertMaisonDeProductionResponseToMaisonDeProductionEntity(MaisonDeProductionResponse maisonDeProductionResponse) {
+        return convertDtoToEntity.convertMaisonDeProductionResponseToMaisonDeProductionEntity(maisonDeProductionResponse);
+    }
+
+    private MaisonDeProductionResponse convertMainsonDeProductionEntityToMaisonDeProductionResponse(MaisonDeProduction maisonDeProduction) {
+        return convertEntityToDto.convertMainsonDeProductionEntityToMaisonDeProductionResponse(maisonDeProduction);
     }
 
 }

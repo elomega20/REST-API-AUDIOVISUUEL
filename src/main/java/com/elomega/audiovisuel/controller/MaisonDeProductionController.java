@@ -1,6 +1,8 @@
 package com.elomega.audiovisuel.controller;
 
 import com.elomega.audiovisuel.dto.ActeurResponse;
+import com.elomega.audiovisuel.dto.MaisonDeProductionRequest;
+import com.elomega.audiovisuel.dto.MaisonDeProductionResponse;
 import com.elomega.audiovisuel.model.Acteur;
 import com.elomega.audiovisuel.model.Film;
 import com.elomega.audiovisuel.model.MaisonDeProduction;
@@ -33,8 +35,8 @@ public class MaisonDeProductionController {
     }
 
     @PostMapping("/maison-de-productions")
-    public ResponseEntity<MaisonDeProduction> postMaisonDeProduction(@RequestBody MaisonDeProduction maisonDeProduction) {
-        return maisonDeProductionService.postMaisonDeProduction(maisonDeProduction)
+    public ResponseEntity<MaisonDeProductionResponse> postMaisonDeProduction(@RequestBody MaisonDeProductionRequest maisonDeProductionRequest) {
+        return maisonDeProductionService.postMaisonDeProduction(maisonDeProductionRequest)
                 .map(maisonDeProduction1 -> new ResponseEntity<>(maisonDeProduction1,HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
