@@ -41,7 +41,7 @@ public class MaisonDeProductionController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
-    @DeleteMapping("/maison-de-producrions/{id}")
+    @DeleteMapping("/maison-de-productions/{id}")
     public ResponseEntity<HttpStatus> deleteMaisonDeProductionById(@PathVariable Long id) {
         return maisonDeProductionService.deleteMaisonDeProductionById(id) ?
                 new ResponseEntity<>(HttpStatus.OK) :
