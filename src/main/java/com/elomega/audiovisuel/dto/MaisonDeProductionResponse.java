@@ -1,8 +1,10 @@
 package com.elomega.audiovisuel.dto;
 
+import lombok.Data;
+
 import java.time.LocalDate;
 import java.util.Date;
-
+@Data
 public class MaisonDeProductionResponse {
     private Long id;
     private String userId;

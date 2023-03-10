@@ -2,8 +2,11 @@ package com.elomega.audiovisuel.service.serviceImpl;
 
 import com.elomega.audiovisuel.dto.ActeurRequest;
 import com.elomega.audiovisuel.dto.ActeurResponse;
+import com.elomega.audiovisuel.dto.MaisonDeProductionRequest;
+import com.elomega.audiovisuel.dto.MaisonDeProductionResponse;
 import com.elomega.audiovisuel.enumeration.Role;
 import com.elomega.audiovisuel.model.Acteur;
+import com.elomega.audiovisuel.model.MaisonDeProduction;
 import com.elomega.audiovisuel.service.ConvertDtoToEntity;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.modelmapper.ModelMapper;
@@ -56,6 +59,44 @@ public class ConvertDtoToEntityImplementation implements ConvertDtoToEntity {
         acteur.setJoinDate(acteurResponse.getJoinDate());
         acteur.setUserId(acteurResponse.getUserId());
         return acteur;
+    }
+
+    @Override
+    public MaisonDeProduction convertMaisonDeProductionRequestToMaisonDeProductionEntity(MaisonDeProductionRequest maisonDeProductionRequest) {
+        MaisonDeProduction maisonDeProduction = new MaisonDeProduction();
+        maisonDeProduction.setFirstName(maisonDeProductionRequest.getFirstName());
+        maisonDeProduction.setLastName(maisonDeProductionRequest.getLastName());
+        maisonDeProduction.setAnneeDeCreation(maisonDeProductionRequest.getAnneeDeCreation());
+        maisonDeProduction.setEmail(maisonDeProductionRequest.getEmail());
+        maisonDeProduction.setRole(getRoleEnumName(maisonDeProductionRequest.getRole()).name());
+        maisonDeProduction.setAuthorities(getRoleEnumName(maisonDeProductionRequest.getRole()).getAuthorities());
+        maisonDeProduction.setUsername(maisonDeProductionRequest.getUsername());
+        maisonDeProduction.setActive(Boolean.parseBoolean(maisonDeProductionRequest.getIsActive()));
+        maisonDeProduction.setNotLocked(Boolean.parseBoolean(maisonDeProductionRequest.getIsNotLocked()));
+        maisonDeProduction.setProfileImageUrl(maisonDeProductionRequest.getProfileImageUrl());
+        maisonDeProduction.setJoinDate(new Date());
+        maisonDeProduction.setPassword(generatePassword());
+        maisonDeProduction.setUserId(generateUserId());
+        return maisonDeProduction;
+    }
+
+    @Override
+    public MaisonDeProduction convertMaisonDeProductionResponseToMaisonDeProductionEntity(MaisonDeProductionResponse maisonDeProductionResponse) {
+        MaisonDeProduction maisonDeProduction = new MaisonDeProduction();
+        maisonDeProduction.setId(maisonDeProductionResponse.getId());
+        maisonDeProduction.setFirstName(maisonDeProductionResponse.getFirstName());
+        maisonDeProduction.setLastName(maisonDeProductionResponse.getLastName());
+        maisonDeProduction.setAnneeDeCreation(maisonDeProductionResponse.getAnneeDeCreation());
+        maisonDeProduction.setEmail(maisonDeProductionResponse.getEmail());
+        maisonDeProduction.setRole(getRoleEnumName(maisonDeProductionResponse.getRole()).name());
+        maisonDeProduction.setAuthorities(getRoleEnumName(maisonDeProductionResponse.getRole()).getAuthorities());
+        maisonDeProduction.setUsername(maisonDeProductionResponse.getUsername());
+        maisonDeProduction.setActive(Boolean.parseBoolean(maisonDeProductionResponse.getIsActive()));
+        maisonDeProduction.setNotLocked(Boolean.parseBoolean(maisonDeProductionResponse.getIsNotLocked()));
+        maisonDeProduction.setProfileImageUrl(maisonDeProductionResponse.getProfileImageUrl());
+        maisonDeProduction.setJoinDate(maisonDeProductionResponse.getJoinDate());
+        maisonDeProduction.setUserId(maisonDeProductionResponse.getUserId());
+        return maisonDeProduction;
     }
 
     private Role getRoleEnumName(String role) {
