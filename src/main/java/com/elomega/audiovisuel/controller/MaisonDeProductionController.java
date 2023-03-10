@@ -22,7 +22,7 @@ public class MaisonDeProductionController {
     private final MaisonDeProductionService maisonDeProductionService;
 
     @GetMapping("/maison-de-productions")
-    public ResponseEntity<Page<MaisonDeProduction>> getMaisonDeproduction(@Param("page") int page, @Param("size") int size) {
+    public ResponseEntity<Page<MaisonDeProductionResponse>> getMaisonDeproduction(@Param("page") int page, @Param("size") int size) {
         return new ResponseEntity<>(maisonDeProductionService.getMaisonDeproduction(page,size),HttpStatus.OK);
     }
 

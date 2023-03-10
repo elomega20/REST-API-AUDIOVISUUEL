@@ -13,7 +13,7 @@ import java.util.Optional;
 
 public interface MaisonDeProductionService {
     // pour obtenir tout ls maisons de productions
-    public Page<MaisonDeProduction> getMaisonDeproduction(int page, int size);
+    public Page<MaisonDeProductionResponse> getMaisonDeproduction(int page, int size);
     // pour obtenir une maison de production via son identifiant
     public Optional<MaisonDeProductionResponse> getMaisonDeProducrionById(Long id);
     // pour ajouter une maison de production

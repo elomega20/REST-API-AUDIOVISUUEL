@@ -15,6 +15,7 @@ import com.elomega.audiovisuel.service.FilmService;
 import com.elomega.audiovisuel.service.MaisonDeProductionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -35,8 +36,13 @@ public class MaisonDeproductionServiceImplementation implements MaisonDeProducti
     private final ConvertDtoToEntity convertDtoToEntity;
     private final ConvertEntityToDto convertEntityToDto;
     @Override
-    public Page<MaisonDeProduction> getMaisonDeproduction(int page, int size) {
-        return maisonDeProductionRepository.findAll(PageRequest.of(page,size));
+    public Page<MaisonDeProductionResponse> getMaisonDeproduction(int page, int size) {
+        List<MaisonDeProductionResponse> maisonDeProductionResponse = maisonDeProductionRepository.findAll(PageRequest.of(page,size))
+                .stream()
+                .map(this::convertMainsonDeProductionEntityToMaisonDeProductionResponse)
+                .collect(Collectors.toList());
+        Page<MaisonDeProductionResponse> maisonDeProductionResponsePages = new PageImpl<>(maisonDeProductionResponse);
+        return maisonDeProductionResponsePages;
     }
 
     @Override
