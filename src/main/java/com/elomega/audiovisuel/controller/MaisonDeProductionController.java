@@ -1,5 +1,6 @@
 package com.elomega.audiovisuel.controller;
 
+import com.elomega.audiovisuel.dto.ActeurResponse;
 import com.elomega.audiovisuel.model.Acteur;
 import com.elomega.audiovisuel.model.Film;
 import com.elomega.audiovisuel.model.MaisonDeProduction;
@@ -72,8 +73,8 @@ public class MaisonDeProductionController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
     @PostMapping("/maison-de-productions/{idmp}/films/{idFilm}/acteurs")
-    public ResponseEntity<List<Acteur>> associatActeursAndFilm(@PathVariable("idmp") Long idMaisonDeProduction,@PathVariable("idFilm") Long idFilm,@RequestBody List<Acteur> acteurs){
-        return maisonDeProductionService.associatActeursAndFilm(idMaisonDeProduction,idFilm,acteurs)
+    public ResponseEntity<List<ActeurResponse>> associatActeursAndFilm(@PathVariable("idmp") Long idMaisonDeProduction,@PathVariable("idFilm") Long idFilm,@RequestBody List<ActeurResponse> acteurResponses){
+        return maisonDeProductionService.associatActeursAndFilm(idMaisonDeProduction,idFilm,acteurResponses)
                 .map(acteurs1 -> new ResponseEntity<>(acteurs1,HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }

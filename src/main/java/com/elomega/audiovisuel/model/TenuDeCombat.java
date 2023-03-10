@@ -23,7 +23,7 @@ public class TenuDeCombat {
     private String pouvoir;
     private String couleur;
     @OneToOne
-    @JoinColumn(name = "acteur_id",referencedColumnName = "acteur_id")
+    @JoinColumn(name = "acteur_id",referencedColumnName = "id")
     @JsonIgnore
     private Acteur acteur;
 }

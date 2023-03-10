@@ -1,5 +1,6 @@
 package com.elomega.audiovisuel.service;
 
+import com.elomega.audiovisuel.dto.ActeurResponse;
 import com.elomega.audiovisuel.model.Acteur;
 import com.elomega.audiovisuel.model.Film;
 import com.elomega.audiovisuel.model.MaisonDeProduction;
@@ -25,5 +26,5 @@ public interface MaisonDeProductionService {
     public Optional<Film> getOneFilmOfMaisonDeProduction(Long idMaisonDeProduction,Long idFilm);
     // ajouter un film pour une maison de production
     public Optional<Film> postOneFilmForMaisonDeProduction(Long idMaisonDeProduction,Film film);
-    public Optional<List<Acteur>> associatActeursAndFilm(Long idMaisonDeProduction,Long idFilm,List<Acteur> acteurs);
+    public Optional<List<ActeurResponse>> associatActeursAndFilm(Long idMaisonDeProduction,Long idFilm,List<ActeurResponse> acteurResponses);
 }

@@ -1,11 +1,14 @@
 package com.elomega.audiovisuel.service.serviceImpl;
 
+import com.elomega.audiovisuel.dto.ActeurResponse;
 import com.elomega.audiovisuel.model.Acteur;
 import com.elomega.audiovisuel.model.Film;
 import com.elomega.audiovisuel.model.MaisonDeProduction;
 import com.elomega.audiovisuel.repository.ActeurRepository;
 import com.elomega.audiovisuel.repository.FilmRepository;
 import com.elomega.audiovisuel.repository.MaisonDeProductionRepository;
+import com.elomega.audiovisuel.service.ConvertDtoToEntity;
+import com.elomega.audiovisuel.service.ConvertEntityToDto;
 import com.elomega.audiovisuel.service.FilmService;
 import com.elomega.audiovisuel.service.MaisonDeProductionService;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
@@ -26,6 +30,7 @@ public class MaisonDeproductionServiceImplementation implements MaisonDeProducti
     private final FilmRepository filmRepository;
     private final FilmService filmService;
     private final ActeurRepository acteurRepository;
+    private final ConvertDtoToEntity convertDtoToEntity;
     @Override
     public Page<MaisonDeProduction> getMaisonDeproduction(int page, int size) {
         return maisonDeProductionRepository.findAll(PageRequest.of(page,size));
@@ -52,7 +57,7 @@ public class MaisonDeproductionServiceImplementation implements MaisonDeProducti
 
     @Override
     public Optional<MaisonDeProduction> updateMaisonDeProduction(MaisonDeProduction maisonDeProduction) {
-        if (maisonDeProductionRepository.findById(maisonDeProduction.getMaisonDeProductionId()).isPresent()){
+        if (maisonDeProductionRepository.findById(maisonDeProduction.getId()).isPresent()){
             return Optional.of(maisonDeProductionRepository.save(maisonDeProduction));
         }
         else
@@ -106,7 +111,10 @@ public class MaisonDeproductionServiceImplementation implements MaisonDeProducti
     }
 
     @Override
-    public Optional<List<Acteur>> associatActeursAndFilm(Long idMaisonDeProduction, Long idFilm, List<Acteur> acteurs) {
+    public Optional<List<ActeurResponse>> associatActeursAndFilm(Long idMaisonDeProduction, Long idFilm, List<ActeurResponse> acteurResponses) {
+        List<Acteur> acteurs = acteurResponses.stream()
+                .map(this::convertActeurResponseToActeurEntity)
+                .collect(Collectors.toList());
         if (maisonDeProductionRepository.existsById(idMaisonDeProduction) && filmRepository.existsById(idFilm) && allActeursExist(acteurs)){
             Optional<Film> film = filmRepository.findById(idFilm);
             for (Acteur acteur : acteurs) {
@@ -115,17 +123,21 @@ public class MaisonDeproductionServiceImplementation implements MaisonDeProducti
                 filmRepository.save(film.get());
                 acteurRepository.save(acteur);
             }
-            return Optional.of(acteurs);
+
+            return Optional.of(acteurResponses);
         }
         return Optional.empty();
     }
 
     private boolean allActeursExist(List<Acteur> acteurs){
         for (Acteur acteur : acteurs) {
-            if (!acteurRepository.existsById(acteur.getActeurId()))
+            if (!acteurRepository.existsById(acteur.getId()))
                 return false;
         }
         return true;
+    }
+    private Acteur convertActeurResponseToActeurEntity(ActeurResponse acteurResponse){
+        return convertDtoToEntity.convertActeurResponseToActeurEntity(acteurResponse);
     }
 
 }

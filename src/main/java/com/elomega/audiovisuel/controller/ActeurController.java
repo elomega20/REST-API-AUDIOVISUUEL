@@ -1,6 +1,7 @@
 package com.elomega.audiovisuel.controller;
 
 import com.elomega.audiovisuel.dto.ActeurRequest;
+import com.elomega.audiovisuel.dto.ActeurResponse;
 import com.elomega.audiovisuel.model.Acteur;
 import com.elomega.audiovisuel.model.Film;
 import com.elomega.audiovisuel.model.TenuDeCombat;
@@ -21,19 +22,19 @@ public class ActeurController {
 
     //  ENDPOINTS ACTEURS
     @GetMapping("/acteurs")
-    public ResponseEntity<Page<Acteur>> getActeur(@Param("page") int page, @Param("size") int size) {
+    public ResponseEntity<Page<ActeurResponse>> getActeur(@Param("page") int page, @Param("size") int size) {
         return new ResponseEntity<>(acteurService.getActeur(page,size),HttpStatus.OK);
     }
 
     @GetMapping("/acteurs/{id}")
-    public ResponseEntity<Acteur> getActeurById(@PathVariable Long id) {
+    public ResponseEntity<ActeurResponse> getActeurById(@PathVariable Long id) {
         return acteurService.getActeurById(id)
                 .map(acteur -> new ResponseEntity<>(acteur,HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping("/acteurs")
-    public ResponseEntity<Acteur> postActeur(@RequestBody ActeurRequest acteurRequest) {
+    public ResponseEntity<ActeurResponse> postActeur(@RequestBody ActeurRequest acteurRequest) {
         return acteurService.postActeur(acteurRequest)
                 .map(acteurSave -> new ResponseEntity<>(acteurSave,HttpStatus.CREATED))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
@@ -61,8 +62,8 @@ public class ActeurController {
     }
 
     @PutMapping("/acteurs")
-    public ResponseEntity<Acteur> updateActeur(@RequestBody Acteur acteur) {
-        return acteurService.updateActeur(acteur)
+    public ResponseEntity<ActeurResponse> updateActeur(@RequestBody ActeurResponse acteurResponse) {
+        return acteurService.updateActeur(acteurResponse)
                 .map(acteur1->new ResponseEntity<>(acteur1, HttpStatus.OK))
                 .orElseGet(()-> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }

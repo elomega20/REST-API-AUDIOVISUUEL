@@ -1,5 +1,6 @@
 package com.elomega.audiovisuel.service;
 
+import com.elomega.audiovisuel.dto.ActeurResponse;
 import com.elomega.audiovisuel.model.Acteur;
 import com.elomega.audiovisuel.model.Film;
 import org.springframework.data.domain.Page;
@@ -17,9 +18,9 @@ public interface FilmService {
     // pour supprimer un film via son identifant
     public boolean deleteFilmById(Long id);
     // pour  obtenir tout les acteurs d'un film
-    public Optional<List<Acteur>> getAllActeursOfFilm(Long idFilm);
+    public Optional<List<ActeurResponse>> getAllActeursOfFilm(Long idFilm);
     // pour obtenir un acteur d'un film via leur identifiants
-    public Optional<Acteur> getOneActeurOfFilm(Long idFilm,Long idActeur);
+    public Optional<ActeurResponse> getOneActeurOfFilm(Long idFilm,Long idActeur);
     // pour mettre a jour un film
     public Optional<Film> updateFilm(Film film);
 }

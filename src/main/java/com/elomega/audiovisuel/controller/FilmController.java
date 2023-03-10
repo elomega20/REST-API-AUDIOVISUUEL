@@ -1,5 +1,6 @@
 package com.elomega.audiovisuel.controller;
 
+import com.elomega.audiovisuel.dto.ActeurResponse;
 import com.elomega.audiovisuel.model.Acteur;
 import com.elomega.audiovisuel.model.Film;
 import com.elomega.audiovisuel.service.FilmService;
@@ -44,14 +45,14 @@ public class FilmController {
     }
 
     @GetMapping("/films/{id}/acteurs")
-    public ResponseEntity<List<Acteur>> getAllActeursOfFilm(@PathVariable("id") Long idFilm) {
+    public ResponseEntity<List<ActeurResponse>> getAllActeursOfFilm(@PathVariable("id") Long idFilm) {
         return filmService.getAllActeursOfFilm(idFilm)
                 .map(films -> new ResponseEntity<>(films,HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping("/films/{id_film}/acteurs/{id_acteur}")
-    public ResponseEntity<Acteur> getOneActeurOfFilm(@PathVariable("id_film") Long idFilm,@PathVariable("id_acteur") Long idActeur) {
+    public ResponseEntity<ActeurResponse> getOneActeurOfFilm(@PathVariable("id_film") Long idFilm, @PathVariable("id_acteur") Long idActeur) {
         return filmService.getOneActeurOfFilm(idFilm,idActeur)
                 .map(acteur -> new ResponseEntity<>(acteur,HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));

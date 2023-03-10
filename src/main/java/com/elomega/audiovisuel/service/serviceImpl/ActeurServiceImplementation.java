@@ -1,6 +1,7 @@
 package com.elomega.audiovisuel.service.serviceImpl;
 
 import com.elomega.audiovisuel.dto.ActeurRequest;
+import com.elomega.audiovisuel.dto.ActeurResponse;
 import com.elomega.audiovisuel.model.Acteur;
 import com.elomega.audiovisuel.model.Film;
 import com.elomega.audiovisuel.model.TenuDeCombat;
@@ -9,16 +10,19 @@ import com.elomega.audiovisuel.repository.FilmRepository;
 import com.elomega.audiovisuel.repository.TenuDeCombatRepository;
 import com.elomega.audiovisuel.service.ActeurService;
 import com.elomega.audiovisuel.service.ConvertDtoToEntity;
+import com.elomega.audiovisuel.service.ConvertEntityToDto;
 import com.elomega.audiovisuel.service.TenuDeCombatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
@@ -33,21 +37,33 @@ public class ActeurServiceImplementation implements ActeurService {
     private final TenuDeCombatRepository tenuDeCombatRepository;
     private final TenuDeCombatService tenuDeCombatService;
     private final ConvertDtoToEntity convertDtoToEntity;
+    private final ConvertEntityToDto convertEntityToDto;
     @Override
-    public Page<Acteur> getActeur(int page,int size) {
-        return acteurRepository.findAll(PageRequest.of(page,size));
+    public Page<ActeurResponse> getActeur(int page,int size) {
+        List<ActeurResponse> acteurResponses = acteurRepository.findAll(PageRequest.of(page,size))
+                .stream()
+                .map(this::convertActeurEntityToActeurResponse)
+                .collect(Collectors.toList());
+        Page<ActeurResponse> acteurResponsesPages = new PageImpl<>(acteurResponses);
+        return acteurResponsesPages;
     }
 
     @Override
-    public Optional<Acteur> getActeurById(Long id) {
-        return acteurRepository.findById(id);
+    public Optional<ActeurResponse> getActeurById(Long id) {
+        Optional<Acteur> acteur = acteurRepository.findById(id);
+        if (acteur.isPresent()) {
+            return Optional.of(convertActeurEntityToActeurResponse(acteur.get()));
+        }else {
+            return Optional.empty();
+        }
     }
 
     @Override
-    public Optional<Acteur> postActeur(ActeurRequest acteurRequest) {
-        Acteur acteur = convertDtoToEntity.convertActeurDtoToActeurEntity(acteurRequest);
+    public Optional<ActeurResponse> postActeur(ActeurRequest acteurRequest) {
+        Acteur acteur = convertDtoToEntity.convertActeurResquestToActeurEntity(acteurRequest);
         acteurRepository.saveAndFlush(acteur);
-        return Optional.of(acteur);
+        ActeurResponse acteurResponse = convertEntityToDto.convertActeurEntityToActeurResponse(acteur);
+        return Optional.of(acteurResponse);
     }
 
     @Override
@@ -90,13 +106,17 @@ public class ActeurServiceImplementation implements ActeurService {
     }
 
     @Override
-    public Optional<Acteur> updateActeur(Acteur acteur) {
-        Optional<Acteur> acteurExistant = Optional.ofNullable(acteurRepository.findById(acteur.getActeurId()).orElseThrow(IllegalArgumentException::new));
-        return acteurExistant.map(
-                act -> {
-                    return acteurRepository.save(acteur);
-                }
-        );
+    public Optional<ActeurResponse> updateActeur(ActeurResponse acteurResponse) {
+        Acteur acteur = convertDtoToEntity.convertActeurResponseToActeurEntity(acteurResponse);
+        Optional<Acteur> acteurExistant =  acteurRepository.findById(acteur.getId());
+        if (acteurExistant.isPresent()){
+            acteurRepository.saveAndFlush(acteur);
+            ActeurResponse acteurResponse1 = convertActeurEntityToActeurResponse(acteur);
+            log.info(acteurResponse1.toString());
+            return Optional.of(acteurResponse1);
+        }else {
+            return Optional.empty();
+        }
     }
 
     @Override
@@ -115,6 +135,10 @@ public class ActeurServiceImplementation implements ActeurService {
                 return Optional.empty();
         }
         return Optional.empty();
+    }
+
+    private ActeurResponse convertActeurEntityToActeurResponse(Acteur acteur) {
+        return convertEntityToDto.convertActeurEntityToActeurResponse(acteur);
     }
 
 }

@@ -29,12 +29,12 @@ public class Film {
     @JoinTable(
             name = "acteurs_films",
             joinColumns = @JoinColumn(name = "film_id",referencedColumnName = "film_id"),
-            inverseJoinColumns = @JoinColumn(name = "acteur_id",referencedColumnName = "acteur_id"))
+            inverseJoinColumns = @JoinColumn(name = "acteur_id",referencedColumnName = "id"))
     @JsonIgnore
     private List<Acteur> acteurs;
 
     @ManyToOne
-    @JoinColumn(name = "maison_de_production_id",referencedColumnName = "maison_de_production_id")
+    @JoinColumn(name = "maison_de_production_id",referencedColumnName = "id")
     @JsonIgnore
     private MaisonDeProduction maisonDeProduction;
 

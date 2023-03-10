@@ -16,13 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "acteurs")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Acteur{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "acteur_id")
-    private Long acteurId;
-    private String nom;
-    private String prenom;
+public class Acteur extends User{
     @Column(name = "date_de_naissance")
     private LocalDate dateDeNaissance;
     @ManyToMany(mappedBy = "acteurs")
