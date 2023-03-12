@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,12 +22,12 @@ public class Acteur extends User{
     private LocalDate dateDeNaissance;
     @ManyToMany(mappedBy = "acteurs")
     @JsonIgnore
-    private List<Film> films;
+    private List<Film> films = new ArrayList<>();
     @OneToOne(mappedBy = "acteur")
     private TenuDeCombat tenuDeCombat;
 
     public void addFilm(Film film){
-        this.films.add(film);
+        films.add(film);
     }
 
 }
