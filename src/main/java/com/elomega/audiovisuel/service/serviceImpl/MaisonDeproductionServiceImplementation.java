@@ -121,7 +121,7 @@ public class MaisonDeproductionServiceImplementation implements MaisonDeProducti
                 maisonDeProduction.get().addFilm(filmPosted.get());
                 filmPosted.get().setMaisonDeProduction(maisonDeProduction.get());
                 maisonDeProductionRepository.save(maisonDeProduction.get());
-                filmRepository.save(filmPosted.get());
+                return Optional.of(filmRepository.save(filmPosted.get()));
             }
             else
                 return Optional.empty();
