@@ -69,7 +69,7 @@ public class MaisonDeProductionController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
     @PostMapping("/maison-de-productions/{idmp}/films")
-    public ResponseEntity<Film> postOneFilmForMaisonDeProduction(@PathVariable Long idMaisonDeProduction,@RequestBody Film film){
+    public ResponseEntity<Film> postOneFilmForMaisonDeProduction(@PathVariable("idmp") Long idMaisonDeProduction,@RequestBody Film film){
         return maisonDeProductionService.postOneFilmForMaisonDeProduction(idMaisonDeProduction,film)
                 .map(film1 -> new ResponseEntity<>(film1,HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));

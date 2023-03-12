@@ -118,10 +118,11 @@ public class MaisonDeproductionServiceImplementation implements MaisonDeProducti
         if (maisonDeProduction.isPresent()){
             Optional<Film> filmPosted = filmService.postFilm(film);
             if (filmPosted.isPresent()){
-                maisonDeProduction.get().addFilm(filmPosted.get());
                 filmPosted.get().setMaisonDeProduction(maisonDeProduction.get());
+                maisonDeProduction.get().addFilm(filmPosted.get());
+                filmRepository.saveAndFlush(filmPosted.get());
                 maisonDeProductionRepository.save(maisonDeProduction.get());
-                return Optional.of(filmRepository.save(filmPosted.get()));
+                return filmPosted;
             }
             else
                 return Optional.empty();
