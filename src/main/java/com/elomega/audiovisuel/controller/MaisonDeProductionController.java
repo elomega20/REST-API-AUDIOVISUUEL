@@ -49,8 +49,8 @@ public class MaisonDeProductionController {
     }
 
     @PutMapping("/maison-de-productions")
-    public ResponseEntity<MaisonDeProduction> updateMaisonDeProduction(@RequestBody MaisonDeProduction maisonDeProduction) {
-        return maisonDeProductionService.updateMaisonDeProduction(maisonDeProduction)
+    public ResponseEntity<MaisonDeProductionResponse> updateMaisonDeProduction(@RequestBody MaisonDeProductionResponse maisonDeProductionResponse) {
+        return maisonDeProductionService.updateMaisonDeProduction(maisonDeProductionResponse)
                 .map(maisonDeProduction1 -> new ResponseEntity<>(maisonDeProduction1,HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }

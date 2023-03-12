@@ -72,9 +72,12 @@ public class MaisonDeproductionServiceImplementation implements MaisonDeProducti
     }
 
     @Override
-    public Optional<MaisonDeProduction> updateMaisonDeProduction(MaisonDeProduction maisonDeProduction) {
+    public Optional<MaisonDeProductionResponse> updateMaisonDeProduction(MaisonDeProductionResponse maisonDeProductionResponse) {
+        MaisonDeProduction maisonDeProduction = convertMaisonDeProductionResponseToMaisonDeProductionEntity(maisonDeProductionResponse);
         if (maisonDeProductionRepository.findById(maisonDeProduction.getId()).isPresent()){
-            return Optional.of(maisonDeProductionRepository.save(maisonDeProduction));
+            return Optional.of(
+                        convertMainsonDeProductionEntityToMaisonDeProductionResponse(maisonDeProductionRepository.save(maisonDeProduction))
+                    );
         }
         else
             return Optional.empty();
