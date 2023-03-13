@@ -1,12 +1,10 @@
 package com.elomega.audiovisuel.service.serviceImpl;
 
-import com.elomega.audiovisuel.dto.ActeurRequest;
-import com.elomega.audiovisuel.dto.ActeurResponse;
-import com.elomega.audiovisuel.dto.MaisonDeProductionRequest;
-import com.elomega.audiovisuel.dto.MaisonDeProductionResponse;
+import com.elomega.audiovisuel.dto.*;
 import com.elomega.audiovisuel.enumeration.Role;
 import com.elomega.audiovisuel.model.Acteur;
 import com.elomega.audiovisuel.model.MaisonDeProduction;
+import com.elomega.audiovisuel.model.User;
 import com.elomega.audiovisuel.service.ConvertDtoToEntity;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.modelmapper.ModelMapper;
@@ -97,6 +95,42 @@ public class ConvertDtoToEntityImplementation implements ConvertDtoToEntity {
         maisonDeProduction.setJoinDate(maisonDeProductionResponse.getJoinDate());
         maisonDeProduction.setUserId(maisonDeProductionResponse.getUserId());
         return maisonDeProduction;
+    }
+
+    @Override
+    public User convertUserRequestToUserEntity(UserRequest userRequest) {
+        User user = new User();
+        user.setFirstName(userRequest.getFirstName());
+        user.setLastName(userRequest.getLastName());
+        user.setEmail(userRequest.getEmail());
+        user.setRole(getRoleEnumName(userRequest.getRole()).name());
+        user.setAuthorities(getRoleEnumName(userRequest.getRole()).getAuthorities());
+        user.setUsername(userRequest.getUsername());
+        user.setActive(Boolean.parseBoolean(userRequest.getIsActive()));
+        user.setNotLocked(Boolean.parseBoolean(userRequest.getIsNotLocked()));
+        user.setProfileImageUrl(userRequest.getProfileImageUrl());
+        user.setJoinDate(new Date());
+        user.setPassword(generatePassword());
+        user.setUserId(generateUserId());
+        return user;
+    }
+
+    @Override
+    public User convertUserResponseToUserEntity(UserResponse userResponse) {
+        User user = new User();
+        user.setId(userResponse.getId());
+        user.setFirstName(userResponse.getFirstName());
+        user.setLastName(userResponse.getLastName());
+        user.setEmail(userResponse.getEmail());
+        user.setRole(getRoleEnumName(userResponse.getRole()).name());
+        user.setAuthorities(getRoleEnumName(userResponse.getRole()).getAuthorities());
+        user.setUsername(userResponse.getUsername());
+        user.setActive(Boolean.parseBoolean(userResponse.getIsActive()));
+        user.setNotLocked(Boolean.parseBoolean(userResponse.getIsNotLocked()));
+        user.setProfileImageUrl(userResponse.getProfileImageUrl());
+        user.setJoinDate(userResponse.getJoinDate());
+        user.setUserId(userResponse.getUserId());
+        return user;
     }
 
     private Role getRoleEnumName(String role) {

@@ -2,8 +2,10 @@ package com.elomega.audiovisuel.service.serviceImpl;
 
 import com.elomega.audiovisuel.dto.ActeurResponse;
 import com.elomega.audiovisuel.dto.MaisonDeProductionResponse;
+import com.elomega.audiovisuel.dto.UserResponse;
 import com.elomega.audiovisuel.model.Acteur;
 import com.elomega.audiovisuel.model.MaisonDeProduction;
+import com.elomega.audiovisuel.model.User;
 import com.elomega.audiovisuel.service.ConvertEntityToDto;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -28,5 +30,13 @@ public class ConvertEntityToDtoImplementation implements ConvertEntityToDto {
         MaisonDeProductionResponse maisonDeProductionResponse = new MaisonDeProductionResponse();
         maisonDeProductionResponse = modelMapper.map(maisonDeProduction,MaisonDeProductionResponse.class);
         return maisonDeProductionResponse;
+    }
+
+    @Override
+    public UserResponse convertUserEntityToUserResponse(User user) {
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+        UserResponse userResponse = new UserResponse();
+        userResponse = modelMapper.map(user, UserResponse.class);
+        return userResponse;
     }
 }
