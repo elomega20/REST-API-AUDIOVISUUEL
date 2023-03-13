@@ -23,6 +23,8 @@ public class Film {
     private Long filmId;
     private String titre;
     private String description;
+    @Column(name = "url_video")
+    private String urlVideo;
     @Column(name = "annee_de_production")
     private LocalDate anneeDeProduction;
     @ManyToMany
